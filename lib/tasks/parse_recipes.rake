@@ -31,13 +31,33 @@ namespace :parse_recipes do
 	def recipe_items_to_db(recipe_items, recipe_id)
 		recipe_items.each do |recipe_item|
 			words = recipe_item.split(" ")
-			if is_number? words[0]
+			# Fraction like 1/4 tablespoon salt
+			if words[0].match(/^[1-9]\/[1-9]/)
+				unit = unit_to_db(words[1].downcase())
+				fraction = words[0].split("/")
+				q = Quantity.find_or_create_by(:amount => Float(fraction[0])/Float(fraction[1]), :unit_id => unit)
+				q.save
+				item = item_to_db(words[2..-1].join(" ").downcase())
+				ri = RecipeItem.new(:recipe_id => recipe_id, :item_id => item, :quantity_id => q.id, :name => recipe_item)
+				ri.save
+			# Mixed number like 1 1/2 tablespoons salt
+			elsif is_number?(words[0]) && words[1].match(/[1-9]\/[1-9]/)
+				unit = unit_to_db(words[2].downcase())
+				fraction = words[1].split("/")
+				q = Quantity.find_or_create_by(:amount => Float(words[0]) + Float(fraction[0])/Float(fraction[1]), :unit_id => unit)
+				q.save
+				item = item_to_db(words[3..-1].join(" ").downcase())
+				ri = RecipeItem.new(:recipe_id => recipe_id, :item_id => item, :quantity_id => q.id, :name => recipe_item)
+				ri.save
+			# Whole number like 1 tablespoon salt
+			elsif is_number? words[0]
 				unit = unit_to_db(words[1].downcase())
 				q = Quantity.find_or_create_by(:amount => Float(words[0]), :unit_id => unit)
 				q.save
 				item = item_to_db(words[2..-1].join(" ").downcase())
 				ri = RecipeItem.new(:recipe_id => recipe_id, :item_id => item, :quantity_id => q.id, :name => recipe_item)
 				ri.save
+			# Not numeric like pinch of salt
 			else
 				unit = unit_to_db("NULL_UNIT")
 				q = Quantity.find_or_create_by(:amount => 1.0, :unit_id => unit)
@@ -65,6 +85,7 @@ namespace :parse_recipes do
 	end
 
 	def item_to_db(str)
+		str = str.strip.downcase
 		items = Item.all
 		items.each do |item|
 			if item.name.include?(str) or str.include?(item.name)
