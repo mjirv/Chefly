@@ -32,7 +32,8 @@ namespace :parse_recipes do
 		recipe_items.each do |recipe_item|
 			words = recipe_item.split(" ")
 			# Fraction like 1/4 tablespoon salt
-			if words[0].match(/^[1-9]\/[1-9]/)
+			if words[0].nil?
+			elsif words[0].match(/^[1-9]\/[1-9]$/)
 				unit = unit_to_db(words[1].downcase())
 				fraction = words[0].split("/")
 				q = Quantity.find_or_create_by(:amount => Float(fraction[0])/Float(fraction[1]), :unit_id => unit)
@@ -41,7 +42,7 @@ namespace :parse_recipes do
 				ri = RecipeItem.new(:recipe_id => recipe_id, :item_id => item, :quantity_id => q.id, :name => recipe_item)
 				ri.save
 			# Mixed number like 1 1/2 tablespoons salt
-			elsif is_number?(words[0]) && words[1].match(/[1-9]\/[1-9]/)
+			elsif is_number?(words[0]) && words[1].match(/^[1-9]\/[1-9]$/)
 				unit = unit_to_db(words[2].downcase())
 				fraction = words[1].split("/")
 				q = Quantity.find_or_create_by(:amount => Float(words[0]) + Float(fraction[0])/Float(fraction[1]), :unit_id => unit)
@@ -78,6 +79,7 @@ namespace :parse_recipes do
 				return unit.id
 			end
 		end
+
 		# else
 		new_db_unit = Unit.new(:name => new_unit)
 		new_db_unit.save
@@ -85,13 +87,18 @@ namespace :parse_recipes do
 	end
 
 	def item_to_db(str)
-		str = str.strip.downcase
+		str = str.strip.downcase.gsub('"', "")
+		if str.include?(",")
+			str = str.slice(0..(str.index(',') - 1))
+		end
 		items = Item.all
+		
 		items.each do |item|
 			if item.name.include?(str) or str.include?(item.name)
 				return item.id
 			end
 		end
+
 		# else
 		new_db_item = Item.new(:name => str)
 		new_db_item.save

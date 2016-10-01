@@ -27,7 +27,9 @@ class GroceryList < ApplicationRecord
 	def get_list
 		list = []
 		self.grocery_list_items.each do |item|
-			list << item.to_s
+			if item.name[-1] != ":"
+				list << item.to_s
+			end
 		end
 		list
 	end

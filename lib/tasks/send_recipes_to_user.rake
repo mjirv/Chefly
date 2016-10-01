@@ -2,7 +2,7 @@ require 'mail'
 
 namespace :send_recipes do
   desc "Creates five new recipes for a user and deactivates old ones"
-  task :get_recipes_for_user, [:user_email] => [:environment] do |t, args|
+  task :get_recipes_for_user, [:user_email, :n_recipes] => [:environment] do |t, args|
   	begin
   		user_id = User.where(:email => args.user_email).first.id
 
@@ -13,7 +13,7 @@ namespace :send_recipes do
 	  	last_week_recipes.map{ |r| r.save }
 
 	  	# Get some new random ones!
-	  	recipes = Recipe.limit(5).order("RANDOM()")
+	  	recipes = Recipe.limit(args.n_recipes).order("RANDOM()")
 	  	recipes.each do |recipe|
 	  		link = RecipeToUserLink.new(:status => RecipeToUserLink.statuses["active"], :user_id => user_id, :recipe_id => recipe.id)
 	  		link.save
@@ -44,9 +44,9 @@ namespace :send_recipes do
 
   		recipe_items.each do |ri|
   			item_name = ri.item.name
-  			if item_name.match(/[a-z]+/)
+  			if item_name.match(/[a-z]+/) # TODO: and doesn't end in a colon
 	  			unit_name = ri.quantity.unit.name
-	  			list_key = " #{unit_name} #{item_name}"
+	  			list_key = "#{unit_name} #{item_name}"
 	  			amount = ri.quantity.amount
 
 	  			if unit_name == "NULL_UNIT"
