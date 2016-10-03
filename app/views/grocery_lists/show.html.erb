@@ -1,5 +1,4 @@
 <h2><strong>Your Grocery List</strong></h2>
-<%= button_to "Email List", email_grocery_list_path(@grocery_list.id), method: :post %>
 <%= button_to "Edit", edit_grocery_list_path(@grocery_list.id), method: :get %>
 <p>
 	<% @grocery_list.grocery_list_items.each do |item| %>

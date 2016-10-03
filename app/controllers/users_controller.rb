@@ -61,7 +61,47 @@ class UsersController < ApplicationController
 	  		end
   		end
   		grocery_list.save_list
-  		redirect_to show_user_recipes_path, :method => :get
+  		redirect_to show_user_recipes_path(:id => user_id), :method => :get
+	end
+
+	def generate_recipe
+		user_id = User.find(params[:id]).id
+		num_recipes = Recipe.all.count
+
+		# Make sure we aren't duplicating recipes
+		if RecipeToUserLink.where(:user_id => user_id).where(:status => RecipeToUserLink.statuses["active"]).count == num_recipes
+			raise RuntimeError, "No more recipes available"
+		end
+		recipe = Recipe.find(Random.rand(num_recipes))
+		while RecipeToUserLink.where(:user_id => user_id).where(:recipe_id => recipe.id).where(:status => RecipeToUserLink.statuses["active"]) != []
+			recipe = Recipe.find(Random.rand(num_recipes))
+		end
+
+		link = RecipeToUserLink.create(:status => RecipeToUserLink.statuses["active"], :user_id => user_id, :recipe_id => recipe.id)
+		generate_grocery_list(user_id)
+	end
+
+	def delete_recipe
+		delete_recipe_helper(params[:user_id], params[:recipe_id])
+		generate_grocery_list(params[:user_id])
+	end
+
+	def delete_and_generate_recipe
+		delete_recipe_helper(params[:user_id], params[:recipe_id])
+		params[:id] = params[:user_id]
+		generate_recipe
+	end
+
+	private
+	def delete_recipe_helper(user_id, recipe_id)
+		user_recipe = RecipeToUserLink.where(:recipe_id => recipe_id).where(:user_id => user_id).where(:status => RecipeToUserLink.statuses["active"])
+		if user_recipe == []
+			raise ArgumentError, "Recipe does not exist or is already deleted."
+		else
+			user_recipe = user_recipe.first
+			user_recipe.status = RecipeToUserLink.statuses["inactive"]
+			user_recipe.save
+		end
 	end
 
 end
