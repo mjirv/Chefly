@@ -4,4 +4,5 @@ class Item < ApplicationRecord
 
 	has_many :recipe_items, :dependent => :destroy
 	has_many :tags
+	has_many :grocery_list_items
 end

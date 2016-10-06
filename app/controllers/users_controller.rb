@@ -57,7 +57,7 @@ class UsersController < ApplicationController
 	  				list_key = "#{item_name}"
 	  			end
 
-	  			grocery_list.add_to_list(list_key, amount)
+	  			grocery_list.add_to_list(list_key, amount, item_name)
 	  		end
   		end
   		grocery_list.save_list
@@ -90,6 +90,15 @@ class UsersController < ApplicationController
 		delete_recipe_helper(params[:user_id], params[:recipe_id])
 		params[:id] = params[:user_id]
 		generate_recipe
+	end
+
+	def grocery_list_to_instacart
+		list = GroceryList.where(:user_id => user_id).where(:status => GroceryList.statuses["active"]).first.grocery_list_items
+		list.each do |i|
+			puts i.item_name
+		end
+		#TODO: Make item matching better so the items will actually get picked up in Instacart
+		#TODO: Some HTML requests
 	end
 
 	private
