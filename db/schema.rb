@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20161006045529) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.integer  "grocery_list_id"
+    t.integer  "recipe_item_id"
     t.string   "item_name"
   end
 

@@ -3,6 +3,7 @@ class GroceryListItem < ApplicationRecord
 	validates :name, presence: true
 
 	belongs_to :grocery_list
+	belongs_to :recipe_item
 
 	FRACTION = {
 		"0"  => "",
@@ -31,6 +32,11 @@ class GroceryListItem < ApplicationRecord
 		else
 			self.string_amount = ""
 		end
+	end
+
+	def get_item_name
+		item = Item.find(RecipeItem.find(self.recipe_item_id).item_id)
+		return item.name
 	end
 
 	def to_s

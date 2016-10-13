@@ -2,9 +2,11 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   get '/grocery_lists/:id/', to: 'grocery_lists#show', as: 'grocery_list'
   get '/grocery_lists/edit/:id/', to: 'grocery_lists#update', as: 'edit_grocery_list'
+  get '/grocery_lists/:id/item_mapping', to: 'grocery_lists#item_mapping', as: 'gl_item_mapping'
   post '/grocery_lists/email/:id/', to: 'grocery_lists#email', as: 'email_grocery_list'
 
   get '/grocery_list_items/edit/:id/', to: 'grocery_list_items#update', as: 'edit_grocery_list_item'
+  get '/grocery_list_items/map/:id/', to: 'grocery_list_items#map', as: 'map_grocery_list_item'
   patch '/grocery_list_items/:id/', to: 'grocery_list_items#edit_save', as: 'edit_save_grocery_list_item'
   get '/grocery_list_items/:id/', to: 'grocery_list_items#show', as: 'grocery_list_item'
   delete '/grocery_list_items/:id/', to: 'grocery_list_items#delete', as: 'delete_grocery_list_item'

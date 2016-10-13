@@ -47,20 +47,26 @@ class UsersController < ApplicationController
 
   		recipe_items.each do |ri|
   			item_name = ri.item.name
-  			if item_name.match(/[a-z]+/) # TODO: and doesn't end in a colon
+  			if item_name.match(/[a-z]+/) && item_name[-1] != ":"
 	  			unit_name = ri.quantity.unit.name
-	  			list_key = "#{unit_name} #{item_name}"
+
+	  			gli_name = "#{unit_name} #{item_name}"
 	  			amount = ri.quantity.amount
+	  			recipe_item_id = ri.id
+	  			grocery_list_id = grocery_list.id
+
 
 	  			if unit_name == "NULL_UNIT"
-	  				amount = ""
-	  				list_key = "#{item_name}"
+	  				amount = 1.0
+	  				gli_name = "#{item_name}"
 	  			end
 
-	  			grocery_list.add_to_list(list_key, amount, item_name)
+	  			string_amount = amount.to_s
+
+	  			GroceryListItem.create(:name => gli_name, :amount => amount, :string_amount => string_amount, :recipe_item_id => recipe_item_id, :grocery_list_id => grocery_list_id)
 	  		end
   		end
-  		grocery_list.save_list
+  		grocery_list.deduplicate
   		redirect_to show_user_recipes_path(:id => user_id), :method => :get
 	end
 

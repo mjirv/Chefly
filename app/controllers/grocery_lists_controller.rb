@@ -52,4 +52,10 @@ class GroceryListsController < ApplicationController
 
 	  	redirect_to dashboard_path(user_id)
 	end
+
+	def item_mapping
+		# TODO make it so only the admin can access this
+		@grocery_list = GroceryList.find(params[:id])
+		@grocery_list_items = @grocery_list.grocery_list_items
+	end
 end

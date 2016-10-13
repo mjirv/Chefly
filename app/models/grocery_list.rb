@@ -10,26 +10,27 @@ class GroceryList < ApplicationRecord
 		@list = Hash.new([0])
 	end
 
-	def add_to_list(name, amount, item_name)
-		if amount.is_a?(Float)
-			@list[name] = [amount.to_f, item_name]
-		elsif amount == "" && @list[name] == [0]
-			@list[name] = [1.0, item_name]
-		end
-	end
+	def deduplicate
+		units = GroceryListItem.where(:grocery_list_id => self.id).joins(:recipe_item).joins('INNER JOIN quantities on recipe_items.quantity_id = quantities.id').pluck('quantities.unit_id').uniq
 
-	def save_list
-		@list.each do |item|
-			new_item = GroceryListItem.create(:name => item[0], :amount => item[1][0], :grocery_list_id => self.id, :item_name => item[1][1])
+		units.each do |unit|
+			glis = GroceryListItem.where(:grocery_list_id => self.id).where(:recipe_item_id => RecipeItem.where(:quantity_id => Quantity.where(:unit_id => unit).pluck(:id)).pluck(:id))
+			items = glis.map(&:recipe_item).pluck(:item_id).uniq
+			items.each do |item|
+				item_glis = glis.select{ |g| RecipeItem.find(g.recipe_item_id).item_id == item }
+				if item_glis.length > 1
+					sum = item_glis.map{ |g| g.amount }.reduce(0.0, :+)
+					new_gli = GroceryListItem.create(:amount => sum, :string_amount => sum.to_s, :name => item_glis.first.name, :grocery_list_id => self.id, :recipe_item_id => item_glis.first.recipe_item_id)
+					item_glis.map(&:delete)
+				end
+			end
 		end
 	end
 
 	def get_list
 		list = []
 		self.grocery_list_items.each do |item|
-			if item.name[-1] != ":"
-				list << item.to_s
-			end
+			list << item.to_s
 		end
 		list
 	end

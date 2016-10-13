@@ -1,5 +1,6 @@
 <h2><strong>Your Grocery List</strong></h2>
 <%= button_to "Edit", edit_grocery_list_path(@grocery_list.id), method: :get %>
+<%= button_to "Mapping", gl_item_mapping_path(@grocery_list.id), method: :get %>
 <p>
 	<% @grocery_list.grocery_list_items.each do |item| %>
 		<% if item.name[-1] != ":" %>

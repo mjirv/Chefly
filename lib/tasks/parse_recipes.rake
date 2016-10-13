@@ -91,18 +91,18 @@ namespace :parse_recipes do
 		if str.include?(",")
 			str = str.slice(0..(str.index(',') - 1))
 		end
-		items = Item.all
+		items = Item.all.pluck(:id, :name)
 		
-		items.each do |item|
-			if item.name.include?(str) or str.include?(item.name)
-				return item.id
+		candidates = []
+		items.each do |item_id, item_name|
+			if str.include?(item_name)
+				candidates << [item_name.length, item_id]
 			end
 		end
 
-		# else
-		new_db_item = Item.new(:name => str)
-		new_db_item.save
-		return new_db_item.id
+		item_id = candidates.max[1] rescue nil
+
+		return item_id
 	end 
 
 	recipes = get_recipes(args.recipes_path)
