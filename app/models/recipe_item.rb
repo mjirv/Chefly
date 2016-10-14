@@ -5,4 +5,12 @@ class RecipeItem < ApplicationRecord
 	belongs_to :recipe
 	belongs_to :item
 	belongs_to :quantity
+
+    before_create do
+        if self.quantity.unit.name == "NULL_UNIT"
+            self.item_amount = self.quantity.amount.ceil.to_i
+        else
+            self.item_amount = 1
+        end
+    end
 end

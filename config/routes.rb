@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   get '/grocery_list_items/edit/:id/', to: 'grocery_list_items#update', as: 'edit_grocery_list_item'
   get '/grocery_list_items/map/:id/', to: 'grocery_list_items#map', as: 'map_grocery_list_item'
+  post '/grocery_list_items/map/:id/', to: 'grocery_list_items#map_post', as: 'map_post_grocery_list_item'
   patch '/grocery_list_items/:id/', to: 'grocery_list_items#edit_save', as: 'edit_save_grocery_list_item'
   get '/grocery_list_items/:id/', to: 'grocery_list_items#show', as: 'grocery_list_item'
   delete '/grocery_list_items/:id/', to: 'grocery_list_items#delete', as: 'delete_grocery_list_item'

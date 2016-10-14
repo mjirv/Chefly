@@ -1,0 +1,11 @@
+<%= button_to "Back", gl_item_mapping_path(@gli.grocery_list_id), method: 'get' %>
+<br />
+<%= form_tag(map_post_grocery_list_item_path(@gli.id), method: 'post') do %>
+    <%= @gli.to_s %>
+    <br />
+    <%= text_field_tag("item_amount", @recipe_item.item_amount) %>
+    <%= text_field_tag("unit_name", @recipe_item.quantity.unit.name) %>
+    <%= text_field_tag("item_name", @item_name) %>
+    <br />
+    <%= submit_tag "Save" %>
+<% end %>

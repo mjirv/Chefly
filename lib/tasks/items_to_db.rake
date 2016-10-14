@@ -2,7 +2,6 @@ namespace :items_to_db do
 	desc "Takes comma-delimeted items from a text file and creates Items in the db based on them."
     task :items_to_db, [:items_filepath] => [:environment] do |t, args|
         def get_items(filepath)
-            # Make sure all \ns are "x;x " first
             file = File.read(filepath).split(", ")
             items = []
             file.each do |item|
@@ -19,6 +18,7 @@ namespace :items_to_db do
             end
         end
 
+        Item.all.map(&:delete)
         items = get_items(args.items_filepath)
         to_db(items)
     end

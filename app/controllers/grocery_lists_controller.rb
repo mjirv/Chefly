@@ -56,6 +56,7 @@ class GroceryListsController < ApplicationController
 	def item_mapping
 		# TODO make it so only the admin can access this
 		@grocery_list = GroceryList.find(params[:id])
-		@grocery_list_items = @grocery_list.grocery_list_items
+		# Don't use @grocery_list.grocery_list_items since that filters out invisible
+		@grocery_list_items = GroceryListItem.where(:grocery_list_id => params[:id]).where(:combined => false)
 	end
 end

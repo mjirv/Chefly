@@ -19,6 +19,12 @@ class GroceryListItem < ApplicationRecord
 
 	before_create do
 		self.generate_string_amount
+		if self.visible == nil
+			self.visible = true
+		end
+		if self.combined == nil
+			self.combined = false
+		end
 	end
 
 	def generate_string_amount
