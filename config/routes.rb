@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   get '/grocery_lists/:id/', to: 'grocery_lists#show', as: 'grocery_list'
+  put '/grocery_lists/:id/', to: 'grocery_lists#update_and_show', as: 'update_and_show_grocery_list'
   get '/grocery_lists/edit/:id/', to: 'grocery_lists#update', as: 'edit_grocery_list'
   get '/grocery_lists/:id/item_mapping', to: 'grocery_lists#item_mapping', as: 'gl_item_mapping'
   post '/grocery_lists/email/:id/', to: 'grocery_lists#email', as: 'email_grocery_list'
@@ -18,6 +19,7 @@ Rails.application.routes.draw do
   get '/users/:id/generate_recipes/', to: 'users#config_recipe_generation', as: 'config_recipe_generation'
   post '/users/:id/generate_recipes/', to: 'users#generate_recipes', as: 'generate_recipes'
   post '/users/:id/generate_recipe/', to: 'users#generate_recipe', as: 'get_new_user_recipe'
+  get '/users/:id/generate_grocery_list', to: 'users#generate_grocery_list', as: 'generate_grocery_list'
   delete '/users/:user_id/delete_recipe/:recipe_id/', to: 'users#delete_recipe', as: 'delete_user_recipe'
   post '/users/:user_id/delete_and_get_new_recipe/:recipe_id/', to: 'users#delete_and_generate_recipe', as: 'delete_and_get_new_user_recipe'
 

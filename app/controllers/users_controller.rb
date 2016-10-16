@@ -31,10 +31,17 @@ class UsersController < ApplicationController
 	  		link.save
 	  	end
 
-	  	generate_grocery_list(user_id)
+	  	generate_grocery_list(user_id, "no_redirect")
+	  	redirect_to show_user_recipes_path(:id => user_id), :method => :get
 	end
 
-	def generate_grocery_list(user_id)
+	def generate_grocery_list(user_id = false, redirect_to_gl=false)
+		if not user_id
+			user_id = params[:id]
+		end
+		if not redirect_to_gl
+			redirect_to_gl = params[:redirect_to_gl]
+		end
   		if GroceryList.where(:user_id => user_id).where(:status => GroceryList.statuses["active"]) != []
 	  		GroceryList.where(:user_id => user_id).map do |g| 
 	  			g.status = GroceryList.statuses["inactive"]
@@ -67,7 +74,10 @@ class UsersController < ApplicationController
 	  		end
   		end
   		grocery_list.deduplicate
-  		redirect_to show_user_recipes_path(:id => user_id), :method => :get
+
+  		if redirect_to_gl == "true"
+  			redirect_to grocery_list_path(grocery_list.id)
+  		end
 	end
 
 	def generate_recipe

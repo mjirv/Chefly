@@ -1,4 +1,7 @@
 require 'mail'
+require "net/https"
+require "uri"
+
 
 class GroceryListsController < ApplicationController
 	def show
@@ -58,5 +61,15 @@ class GroceryListsController < ApplicationController
 		@grocery_list = GroceryList.find(params[:id])
 		# Don't use @grocery_list.grocery_list_items since that filters out invisible
 		@grocery_list_items = GroceryListItem.where(:grocery_list_id => params[:id]).where(:combined => false)
+	end
+
+	def update_and_show
+		user = GroceryList.find(params[:id]).user_id
+		redirect_to generate_grocery_list_path(user, :user_id => user, :redirect_to_gl => true)
+	end
+
+	private
+	def add_item_to_instacart(item)
+		uri = URI.parse("https://instacart.com/")
 	end
 end
