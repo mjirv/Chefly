@@ -91,11 +91,15 @@ namespace :parse_recipes do
 		if str.include?(",")
 			str = str.slice(0..(str.index(',') - 1))
 		end
+		# Add beginning and trailing spaces so our "full word" check below works on first and last word in name
+		str = " " + str + " "
+
 		items = Item.all.pluck(:id, :name)
 		
 		candidates = []
 		items.each do |item_id, item_name|
-			if str.include?(item_name)
+			# Only get full words/phrases, not subsets of words
+			if str.include?(" " + item_name + " ")
 				candidates << [item_name.length, item_id]
 			end
 		end
@@ -103,7 +107,7 @@ namespace :parse_recipes do
 		item_id = candidates.max[1] rescue nil
 
 		return item_id
-	end 
+	end
 
 	Recipe.all.map(&:delete)
 	recipes = get_recipes(args.recipes_path)
