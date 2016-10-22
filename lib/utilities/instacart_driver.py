@@ -7,6 +7,7 @@ from time import sleep
 USERNAME = sys.argv[1]
 PASSWORD = sys.argv[2]
 GROCERY_ITEMS = eval(sys.argv[3])
+CHROMEDRIVER_PATH = sys.argv[4]
 
 def login():
     login_button = br.find_element_by_css_selector('a.log-in')
@@ -43,7 +44,7 @@ def add_item():
 
 # Open the webdriver
 global br
-br = webdriver.Chrome()
+br = webdriver.Chrome(CHROMEDRIVER_PATH)
 br.get("https://instacart.com")
 
 # Set things up

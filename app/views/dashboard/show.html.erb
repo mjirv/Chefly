@@ -6,3 +6,4 @@
 <%= button_to "Generate New Recipes", config_recipe_generation_path(@user.id), method: :get %>
 <%= button_to "View Grocery List", grocery_list_path(@grocery_list_id), method: :get %>
 <%= button_to "Email Recipes and Grocery List", email_grocery_list_path(@grocery_list_id), method: :post %>
+<%= button_to "Auto-Instacart", auto_instacart_path(@user.id, @grocery_list_id), method: :post %>

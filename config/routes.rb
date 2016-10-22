@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get '/users/:id/generate_grocery_list', to: 'users#generate_grocery_list', as: 'generate_grocery_list'
   delete '/users/:user_id/delete_recipe/:recipe_id/', to: 'users#delete_recipe', as: 'delete_user_recipe'
   post '/users/:user_id/delete_and_get_new_recipe/:recipe_id/', to: 'users#delete_and_generate_recipe', as: 'delete_and_get_new_user_recipe'
+  post '/users/:user_id/auto_instacart/:grocery_list_id', to: 'users#auto_instacart', as: 'auto_instacart'
 
   get '/dashboard/:id/', to: 'dashboard#show', as: 'dashboard'
 end

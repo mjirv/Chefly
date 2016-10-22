@@ -108,13 +108,20 @@ class UsersController < ApplicationController
 		generate_recipe
 	end
 
-	def grocery_list_to_instacart
-		list = GroceryList.where(:user_id => user_id).where(:status => GroceryList.statuses["active"]).first.grocery_list_items
-		list.each do |i|
-			puts i.item_name
+	def auto_instacart
+		item_hash = Hash.new(0)
+		grocery_list = GroceryList.find(params[:grocery_list_id].to_i)
+		grocery_list.grocery_list_items.each do |item|
+			item_hash[item.recipe_item.item.name] += item.amount.ceil
 		end
-		#TODO: Make item matching better so the items will actually get picked up in Instacart
-		#TODO: Some HTML requests
+
+		item_hash_str = item_hash.to_s.gsub("\"", "'").gsub("=>", ":")
+
+		instacart_joiner_path = Rails.root.join('lib', 'utilities', 'instacart_driver.py').to_s
+		print instacart_joiner_path
+		`python "#{instacart_joiner_path}" #{ENV["INSTACART_USER"]} #{ENV["INSTACART_PASS"]} "#{item_hash_str}" "#{ENV["CHROMEDRIVER_PATH"]}"`
+
+		redirect_to dashboard_path(params[:user_id])
 	end
 
 	private
