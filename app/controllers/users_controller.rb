@@ -112,11 +112,11 @@ class UsersController < ApplicationController
 		item_hash = Hash.new(0)
 		grocery_list = GroceryList.find(params[:grocery_list_id].to_i)
 		grocery_list.grocery_list_items.each do |item|
-			item_hash[item.recipe_item.item.name] += item.amount.ceil
+			item_hash[item.recipe_item.item.name] += item.recipe_item.item_amount.ceil
 		end
 
 		item_hash_str = item_hash.to_s.gsub("\"", "'").gsub("=>", ":")
-
+		print item_hash_str
 		instacart_joiner_path = Rails.root.join('lib', 'utilities', 'instacart_driver.py').to_s
 		print instacart_joiner_path
 		`python "#{instacart_joiner_path}" #{ENV["INSTACART_USER"]} #{ENV["INSTACART_PASS"]} "#{item_hash_str}" "#{ENV["CHROMEDRIVER_PATH"]}"`

@@ -6,6 +6,7 @@ class GroceryListItemsController < ApplicationController
 	def edit_save
 		@item = GroceryListItem.find(params[:id])
 		item_params[:string_amount] = item_params[:string_amount].strip + " "
+		item_params[:user_edited] = "true"
 		if @item.update_attributes(item_params)
 			redirect_to edit_grocery_list_path(@item.grocery_list_id)
 		end

@@ -59,13 +59,15 @@ class GroceryListsController < ApplicationController
 	def item_mapping
 		# TODO make it so only the admin can access this
 		@grocery_list = GroceryList.find(params[:id])
-		# Don't use @grocery_list.grocery_list_items since that filters out invisible
-		@grocery_list_items = GroceryListItem.where(:grocery_list_id => params[:id]).where(:combined => false)
+		@grocery_list_items = GroceryListItem.where(:grocery_list_id => params[:id]).where.not(:visible => false)
 	end
 
 	def update_and_show
-		user = GroceryList.find(params[:id]).user_id
-		redirect_to generate_grocery_list_path(user, :user_id => user, :redirect_to_gl => true)
+		grocery_list = GroceryList.find(params[:id])
+		user = grocery_list.user_id
+		grocery_list.deduplicate()
+		grocery_list.regenerate_items()
+		redirect_to grocery_list_path(params[:id])
 	end
 
 	private

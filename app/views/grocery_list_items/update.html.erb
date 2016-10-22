@@ -1,5 +1,6 @@
 <%= form_for(@item) do |i| %>
 	<%= i.text_field :string_amount %>
 	<%= i.text_field :name %>
+    <!--<input id="user_edited" name="person[user_edited]" value="true"type="hidden"/>-->
 	<%= i.submit "Save", class: "btn btn-primary" %>
 <% end %>

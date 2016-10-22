@@ -48,4 +48,31 @@ class GroceryListItem < ApplicationRecord
 	def to_s
 		"#{self.string_amount}#{self.name}"
 	end
+
+	def regenerate
+		self.string_amount = to_string_amount(self.recipe_item.quantity.amount)
+		self.name = "#{to_unit_name(self.recipe_item.quantity.unit.name)} #{self.recipe_item.item.name}"
+		self.save
+	end
+
+	private
+	def to_string_amount(amount)
+		string_amount = ""
+		if amount
+			whole, decimal = amount.round(2).to_s.split(".")
+			if whole == "0"
+				string_amount = FRACTION[decimal].nil? ? "#{whole}.#{decimal} " : "#{FRACTION[decimal]}"
+			else
+				string_amount = FRACTION[decimal].nil? ? "#{whole}.#{decimal} " : "#{whole} #{FRACTION[decimal]}"
+			end
+		end
+		return string_amount
+	end
+
+	def to_unit_name(name)
+		if name == "NULL_UNIT"
+			name = ""
+		end
+		return name
+	end
 end

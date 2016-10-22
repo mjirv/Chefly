@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161014044624) do
+ActiveRecord::Schema.define(version: 20161022213341) do
 
   create_table "grocery_list_items", force: :cascade do |t|
     t.string   "name"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20161014044624) do
     t.string   "item_name"
     t.boolean  "visible"
     t.boolean  "combined"
+    t.boolean  "user_edited"
   end
 
   create_table "grocery_lists", force: :cascade do |t|
@@ -54,6 +55,7 @@ ActiveRecord::Schema.define(version: 20161014044624) do
     t.datetime "updated_at",  null: false
     t.integer  "quantity_id"
     t.integer  "item_amount"
+    t.boolean  "mapped"
     t.index ["item_id"], name: "index_recipe_items_on_item_id"
     t.index ["recipe_id"], name: "index_recipe_items_on_recipe_id"
   end

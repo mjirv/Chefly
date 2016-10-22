@@ -39,4 +39,13 @@ class GroceryList < ApplicationRecord
 	def grocery_list_items
 		return GroceryListItem.where(:grocery_list_id => self.id).where.not(:visible => false)
 	end
+
+	def regenerate_items
+		glis = grocery_list_items
+		glis.each do |gli|
+			if gli.combined != false && gli.user_edited != true
+				gli.regenerate()
+			end
+		end
+	end
 end
