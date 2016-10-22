@@ -10,14 +10,19 @@ GROCERY_ITEMS = eval(sys.argv[3])
 CHROMEDRIVER_PATH = sys.argv[4]
 
 def login():
-    login_button = br.find_element_by_css_selector('a.log-in')
-    login_button.click()
+    # Sometimes it takes you to a different landing page...
+    try:
+        login_button = br.find_element_by_css_selector('a.log-in')
+        login_button.click()
+    except:
+        login_button = br.find_element_by_css_selector('a.ic-btn.ic-btn-success')
+        login_button.click()
 
-    username_box = br.find_element_by_css_selector('fieldset.email > input')
-    password_box = br.find_element_by_css_selector('fieldset.password > input')
+        username_box = br.find_element_by_css_selector('fieldset.email > input')
+        password_box = br.find_element_by_css_selector('fieldset.password > input')
 
-    username_box.send_keys(USERNAME)
-    password_box.send_keys(PASSWORD, Keys.RETURN)
+        username_box.send_keys(USERNAME)
+        password_box.send_keys(PASSWORD, Keys.RETURN)
 
 def change_store():
     store_button = br.find_element_by_css_selector('a.primary-nav-link')
