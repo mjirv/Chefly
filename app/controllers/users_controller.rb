@@ -13,8 +13,7 @@ class UsersController < ApplicationController
 	        session[:user_id] = @user.id
 	        redirect_to dashboard_path(@user.id)
 	    else
-	    	# TODO figure out how to use flash stuff
-	    	#flash.alert = "An error occurred."
+	    	flash.alert = "An error occurred."
 	        redirect_to '/signup'
 	    end
   	end

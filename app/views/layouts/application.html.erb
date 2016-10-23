@@ -13,6 +13,14 @@
     <% if current_user %>
   	    <%= button_to "Dashboard", dashboard_path(:id => session[:user_id]), method: :get %>
         <%= button_to "Logout", '/logout', method: :delete %>
+    <% else %>
+        <%= button_to "Login", '/login', method: :get %>
+    <% end %>
+    <% if flash[:alert] %>
+        <div class="alert"><%= flash[:alert] %></div>
+    <% end %>
+    <% if flash[:notice] %>
+        <div class="notice"><%= flash[:notice] %></div>
     <% end %>
   	<br />
     <%= yield %>
