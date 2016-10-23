@@ -1,4 +1,20 @@
 class UsersController < ApplicationController
+	def new
+    	@user = User.new
+ 	end
+  
+  	def create
+	    @user = User.new(user_params)
+	    @user.status = User.statuses["active"]
+	    @user.permission = User.permissions["user"]
+	    if @user.save
+	      session[:user_id] = @user.id
+	      redirect_to dashboard_path(@user.id)
+	    else
+	      redirect_to '/signup'
+	    end
+  	end
+
 	def show
 		@user = User.find(params[:id])
 	end
@@ -135,5 +151,9 @@ class UsersController < ApplicationController
 			user_recipe.save
 		end
 	end
+
+  	def user_params
+        params.require(:user).permit(:first_name, :last_name, :email, :password, :status, :permission)
+    end
 
 end

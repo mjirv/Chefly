@@ -24,5 +24,12 @@ Rails.application.routes.draw do
   post '/users/:user_id/delete_and_get_new_recipe/:recipe_id/', to: 'users#delete_and_generate_recipe', as: 'delete_and_get_new_user_recipe'
   post '/users/:user_id/auto_instacart/:grocery_list_id', to: 'users#auto_instacart', as: 'auto_instacart'
 
+  get 'signup', to: 'users#new'
+  get 'login', to: 'sessions#new'
+  post 'login', to: 'sessions#create'
+  delete 'logout', to: 'sessions#destroy'
+
+  resources :users
+
   get '/dashboard/:id/', to: 'dashboard#show', as: 'dashboard'
 end
