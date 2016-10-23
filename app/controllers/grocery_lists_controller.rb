@@ -5,6 +5,8 @@ require "uri"
 
 class GroceryListsController < ApplicationController
 	before_filter -> { authorize_id(GroceryList.find(params[:id]).user_id) }
+    before_filter -> { authorize_admin }, only: [:item_mapping]
+
 
 	def show
 		@grocery_list = GroceryList.find(params[:id])
@@ -59,7 +61,6 @@ class GroceryListsController < ApplicationController
 	end
 
 	def item_mapping
-		# TODO make it so only the admin can access this
 		@grocery_list = GroceryList.find(params[:id])
 		@grocery_list_items = GroceryListItem.where(:grocery_list_id => params[:id]).where.not(:visible => false)
 	end

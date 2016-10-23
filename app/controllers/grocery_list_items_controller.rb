@@ -1,5 +1,7 @@
 class GroceryListItemsController < ApplicationController
 	before_filter -> { authorize_id(GroceryListItem.find(params[:id]).grocery_list.user_id) }
+    before_filter -> { authorize_admin }, only: [:map, :map_post]
+
 	def update
 		@item = GroceryListItem.find(params[:id])
 	end

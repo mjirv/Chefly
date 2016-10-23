@@ -1,6 +1,8 @@
 <h2><strong>Your Grocery List</strong></h2>
 <%= button_to "Edit", edit_grocery_list_path(@grocery_list.id), method: :get %>
-<%= button_to "Mapping", gl_item_mapping_path(@grocery_list.id), method: :get %>
+<% if User.find(session[:user_id]).permission == "admin" %>
+    <%= button_to "Mapping", gl_item_mapping_path(@grocery_list.id), method: :get %>
+<% end %>
 <p>
 	<% @grocery_list.grocery_list_items.each do |item| %>
 		<% if item.recipe_item.name[-1] != ":" %>
