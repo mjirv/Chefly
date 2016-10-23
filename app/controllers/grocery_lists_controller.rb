@@ -4,6 +4,8 @@ require "uri"
 
 
 class GroceryListsController < ApplicationController
+	before_filter -> { authorize_id(GroceryList.find(params[:id]).user_id) }
+
 	def show
 		@grocery_list = GroceryList.find(params[:id])
 	end

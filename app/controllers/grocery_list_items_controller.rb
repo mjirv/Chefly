@@ -1,4 +1,5 @@
 class GroceryListItemsController < ApplicationController
+	before_filter -> { authorize_id(GroceryListItem.find(params[:id]).grocery_list.user_id) }
 	def update
 		@item = GroceryListItem.find(params[:id])
 	end

@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+	before_filter -> { authorize_id(params[:id]) }, except: [:new, :create]
+
 	def new
     	@user = User.new
  	end
@@ -8,10 +10,12 @@ class UsersController < ApplicationController
 	    @user.status = User.statuses["active"]
 	    @user.permission = User.permissions["user"]
 	    if @user.save
-	      session[:user_id] = @user.id
-	      redirect_to dashboard_path(@user.id)
+	        session[:user_id] = @user.id
+	        redirect_to dashboard_path(@user.id)
 	    else
-	      redirect_to '/signup'
+	    	# TODO figure out how to use flash stuff
+	    	#flash.alert = "An error occurred."
+	        redirect_to '/signup'
 	    end
   	end
 
@@ -99,28 +103,29 @@ class UsersController < ApplicationController
 	def generate_recipe
 		user_id = User.find(params[:id]).id
 		num_recipes = Recipe.all.count
+		recipe_ids = Recipe.all.pluck(:id)
 
 		# Make sure we aren't duplicating recipes
 		if RecipeToUserLink.where(:user_id => user_id).where(:status => RecipeToUserLink.statuses["active"]).count == num_recipes
 			raise RuntimeError, "No more recipes available"
 		end
-		recipe = Recipe.find(Random.rand(num_recipes))
+		recipe = Recipe.find(recipe_ids.sample)
 		while RecipeToUserLink.where(:user_id => user_id).where(:recipe_id => recipe.id).where(:status => RecipeToUserLink.statuses["active"]) != []
 			recipe = Recipe.find(Random.rand(num_recipes))
 		end
 
 		link = RecipeToUserLink.create(:status => RecipeToUserLink.statuses["active"], :user_id => user_id, :recipe_id => recipe.id)
 		generate_grocery_list(user_id)
+		redirect_to show_user_recipes_path(user_id)
 	end
 
 	def delete_recipe
-		delete_recipe_helper(params[:user_id], params[:recipe_id])
-		generate_grocery_list(params[:user_id])
+		delete_recipe_helper(params[:id], params[:recipe_id])
+		generate_grocery_list(params[:id])
 	end
 
 	def delete_and_generate_recipe
-		delete_recipe_helper(params[:user_id], params[:recipe_id])
-		params[:id] = params[:user_id]
+		delete_recipe_helper(params[:id], params[:recipe_id])
 		generate_recipe
 	end
 
@@ -137,7 +142,7 @@ class UsersController < ApplicationController
 		print instacart_joiner_path
 		`python "#{instacart_joiner_path}" #{ENV["INSTACART_USER"]} #{ENV["INSTACART_PASS"]} "#{item_hash_str}" "#{ENV["CHROMEDRIVER_PATH"]}"`
 
-		redirect_to dashboard_path(params[:user_id])
+		redirect_to dashboard_path(params[:id])
 	end
 
 	private
