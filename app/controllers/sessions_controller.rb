@@ -5,10 +5,11 @@ class SessionsController < ApplicationController
     def create
         @user = User.find_by_email(params[:session][:email])
         if @user && @user.authenticate(params[:session][:password])
-          session[:user_id] = @user.id
-          redirect_to dashboard_path(@user.id)
+            session[:user_id] = @user.id
+            redirect_to dashboard_path(@user.id)
         else
-          redirect_to 'login'
+            flash.notice = "Incorrect username or password."
+            redirect_to '/login'
         end
     end
 

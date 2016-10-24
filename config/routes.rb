@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   delete '/grocery_list_items/:id/', to: 'grocery_list_items#delete', as: 'delete_grocery_list_item'
 
   get '/users/:id/edit/', to: 'users#update', as: 'edit_users'
+  patch '/users/:id/', to: 'users#edit_save', as: 'edit_save_users'
   get '/users/:id/recipes/', to: 'users#show_recipes', as: 'show_user_recipes'
   get '/users/:id/', to: 'users#show', as: 'user'
   get '/users/:id/generate_recipes/', to: 'users#config_recipe_generation', as: 'config_recipe_generation'
@@ -23,6 +24,8 @@ Rails.application.routes.draw do
   delete '/users/:id/delete_recipe/:recipe_id/', to: 'users#delete_recipe', as: 'delete_user_recipe'
   post '/users/:id/delete_and_get_new_recipe/:recipe_id/', to: 'users#delete_and_generate_recipe', as: 'delete_and_get_new_user_recipe'
   post '/users/:id/auto_instacart/:grocery_list_id', to: 'users#auto_instacart', as: 'auto_instacart'
+  get '/users/:id/change_password/', to: 'users#change_password', as: 'change_password'
+  patch '/users/:id/change_password/', to: 'users#change_password_save', as: 'change_password_save'
 
   get 'signup', to: 'users#new'
   get 'login', to: 'sessions#new'

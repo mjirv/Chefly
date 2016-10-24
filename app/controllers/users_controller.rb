@@ -26,6 +26,16 @@ class UsersController < ApplicationController
 		@user = User.find(params[:id])
 	end
 
+	def edit_save
+		@user = User.find(params[:id])
+	    if @user.authenticate(user_params[:password]) && @user.update(user_params)
+			flash.notice = 'Successfully updated your profile.'
+		else
+			flash.notice = 'Something went wrong.'
+		end
+		redirect_to edit_user_path(@user.id)
+	end
+
 	def show_recipes
 		@user = User.find(params[:id])
 		@recipes = Recipe.where(:id => RecipeToUserLink.where(:user_id => @user.id).where(:status => RecipeToUserLink.statuses["active"]).pluck(:recipe_id))
@@ -121,6 +131,7 @@ class UsersController < ApplicationController
 	def delete_recipe
 		delete_recipe_helper(params[:id], params[:recipe_id])
 		generate_grocery_list(params[:id])
+		redirect_to show_user_recipes_path(user_id)
 	end
 
 	def delete_and_generate_recipe
@@ -144,6 +155,21 @@ class UsersController < ApplicationController
 		redirect_to dashboard_path(params[:id])
 	end
 
+	def change_password
+		@user = User.find(params[:id])
+	end
+
+	def change_password_save
+		@user = User.find(params[:id])
+	    if user_params[:new_password] == user_params[:password_confirmation] && @user.authenticate(user_params[:password]) && @user.update(:password => user_params[:new_password])
+			flash.notice = 'Successfully updated your password.'
+			redirect_to edit_users_path(@user.id)
+		else
+			flash.notice = 'You did not provide the right current password, or the new password you entered does not match the confirmation.'
+			redirect_to change_password_path(@user.id)
+		end
+	end
+
 	private
 	def delete_recipe_helper(user_id, recipe_id)
 		user_recipe = RecipeToUserLink.where(:recipe_id => recipe_id).where(:user_id => user_id).where(:status => RecipeToUserLink.statuses["active"])
@@ -157,7 +183,7 @@ class UsersController < ApplicationController
 	end
 
   	def user_params
-        params.require(:user).permit(:first_name, :last_name, :email, :password, :status, :permission)
+        params.require(:user).permit(:first_name, :last_name, :email, :password, :status, :permission, :password_confirmation, :new_password)
     end
 
 end

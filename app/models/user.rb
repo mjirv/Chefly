@@ -11,4 +11,6 @@ class User < ApplicationRecord
 	enum status: [ :active, :inactive ]
 	enum permission: [ :user, :admin ]
 	has_secure_password
+
+	validates_confirmation_of :password
 end

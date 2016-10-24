@@ -1,0 +1,26 @@
+<div class="edit_user">
+  <div class="container">
+    <div class="form">
+
+        <h1>Edit Your Profile</h1>
+        <%= button_to "Change Password", change_password_path(@user.id), :method => :get %>
+        <br />
+        <%= form_for @user do |u|%>
+        <%= u.label :first_name, "First Name" %>
+        <%= u.text_field :first_name %>
+        <br />
+        <%= u.label :last_name, "Last Name" %>
+        <%= u.text_field :last_name, :placeholder => "Last Name" %>
+        <br />
+        <%= u.label :email, "Email Address" %>
+        <%= u.email_field :email, :placeholder => "Email" %>
+        <br />
+        <%= u.label :password, "Confirm Password" %>
+        <%= u.password_field :password %>
+        <br />
+        <%= u.submit "Save", class: 'btn-submit' %>
+        <% end %>
+
+    </div>
+  </div>
+</div>
