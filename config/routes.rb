@@ -35,4 +35,6 @@ Rails.application.routes.draw do
   resources :users
 
   get '/dashboard/:id/', to: 'dashboard#show', as: 'dashboard'
+
+  root 'application#index'
 end
