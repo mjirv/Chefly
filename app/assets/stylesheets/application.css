@@ -16,15 +16,24 @@
 
 body {
     font-family: helvetica;
-    background-color: #eddddd;
+    background-color: white;
     margin: 0;
-    color: #222222;
+    color: #eddddd;
+    height: 100%;
+    margin: 0 auto 50px auto;
 }
 
 div.container {
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 600px;
+    margin: 50px auto 0 auto;
+    background-color: #222222;
+    padding: 10px 10px 0 10px;
+    height: 100%;
+    border-radius: 5px;
+}
+
+div.container h3 {
+    margin: 0 0 10px 0;
 }
 
 div.dashboard form.button_to input { 
@@ -50,7 +59,6 @@ div.dashboard form.button_to input:hover {
 div.menu {
     background-color: #222222;
     width: 100%;
-    margin: 0;
 }
 div.menu form.button_to {
     display: inline-block;
@@ -77,6 +85,7 @@ div.menu h1 {
     margin-bottom: 5px;
     margin-left: 5px;
     color: #eddddd;
+    margin-top: 0px;
 }
 
 div.menu h1 a {
