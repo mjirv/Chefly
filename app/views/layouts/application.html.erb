@@ -9,21 +9,28 @@
   </head>
 
   <body>
-  	<h2>Michael's Recipe App</h2> 
-    <% if current_user %>
-  	    <%= button_to "Dashboard", dashboard_path(:id => session[:user_id]), method: :get %>
-        <%= button_to "Logout", '/logout', method: :delete %>
-    <% else %>
-        <%= button_to 'Sign Up', '/signup', method: :get %>
-        <%= button_to "Login", '/login', method: :get %>
-    <% end %>
-    <% if flash[:alert] %>
-        <div class="alert"><%= flash[:alert] %></div>
-    <% end %>
-    <% if flash[:notice] %>
-        <div class="notice"><%= flash[:notice] %></div>
-    <% end %>
-  	<br />
-    <%= yield %>
+    <div class="menu">
+      <% if not current_user %>
+          <h1 class="title">Michael's Recipe App</h1> 
+          <%= button_to 'Sign Up', '/signup', method: :get %>
+          <%= button_to "Login", '/login', method: :get %>
+      <% end %>
+      <% if current_user %>
+          <h1 class="title"><%= link_to "Michael's Recipe App", dashboard_path(:id => session[:user_id]), method: :get %></h1> 
+          <%= button_to "Logout", '/logout', method: :delete %>
+          <%= button_to "Edit Profile", edit_users_path(:id => session[:user_id]), method: :get %>
+    	    <%= button_to "Home", dashboard_path(:id => session[:user_id]), method: :get %>
+      <% end %>
+      <% if flash[:alert] %>
+          <div class="alert"><%= flash[:alert] %></div>
+      <% end %>
+      <% if flash[:notice] %>
+          <div class="notice"><%= flash[:notice] %></div>
+      <% end %>
+    	<br />
+    </div>
+    <div class="container">
+      <%= yield %>
+    </div>
   </body>
 </html>

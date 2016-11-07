@@ -1,9 +1,13 @@
-<h2>Recipe App</h2>
-<h3>Welcome, <%= @user.first_name || @user.email %></h3>
+<div class="dashboard">
+    <h3>Welcome, <%= @user.first_name || @user.email %></h3>
 
-<%= button_to "Edit Profile", edit_users_path(@user.id), method: :get %>
-<%= button_to "Review Recipes", show_user_recipes_path(@user.id), method: :get %>
-<%= button_to "Generate New Recipes", config_recipe_generation_path(@user.id), method: :get %>
-<%= button_to "View Grocery List", grocery_list_path(@grocery_list_id), method: :get %>
-<%= button_to "Email Recipes and Grocery List", email_grocery_list_path(@grocery_list_id), method: :post %>
-<%= button_to "Auto-Instacart", auto_instacart_path(@user.id, @grocery_list_id), method: :post %>
+    <% if @recipes_length > 0 %>
+        <%= button_to "Recipes", show_user_recipes_path(@user.id), method: :get %>
+    <% end %>
+    <%= button_to "Generate New Recipes", config_recipe_generation_path(@user.id), method: :get %>
+    <% if @grocery_list %>
+        <%= button_to "Grocery List", grocery_list_path(@grocery_list_id), method: :get %>
+        <%= button_to "Email Recipes and Grocery List", email_grocery_list_path(@grocery_list_id), method: :post %>
+    <% end %>
+        <!--<%= button_to "Auto-Instacart", auto_instacart_path(@user.id, @grocery_list_id), method: :post %>-->
+</div>
