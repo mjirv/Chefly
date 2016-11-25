@@ -101,6 +101,10 @@ div.menu h1 a {
     text-decoration: none;
 }
 
+input {
+    -webkit-appearance: none;
+}
+
 /* Stuff for the content pages */
 
 div.content {
@@ -133,8 +137,7 @@ div.content input[type="submit"] {
 }
 
 div.content input[type="submit"]:hover {
-    background-color: rgb(150,150,150);
-    color: #ffba00;
+    background-color: #feba40;
     cursor: hand;
     cursor: pointer;
 }
@@ -146,7 +149,7 @@ div.content a {
 }
 
 /* Make mobile responsive */
-@media screen and (max-width:640px) {
+@media screen and (max-width:736px) {
   div.dashboard form.button_to input {
     border-radius: 0;
     width: auto;
@@ -163,10 +166,6 @@ div.content a {
   div.dashboard {
     background-color: rgba(150,150,150,.9);
     padding: 10px 5px 5px 5px;
-  }
-
-  input {
-    -webkit-appearance: none;
   }
 
   div.content {
