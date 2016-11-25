@@ -1,6 +1,4 @@
 <div class="dashboard">
-    <h3>Welcome, <%= @user.first_name || @user.email %></h3>
-
     <% if @recipes_length > 0 %>
         <%= button_to "Recipes", show_user_recipes_path(@user.id), method: :get %>
     <% end %>

@@ -1,4 +1,8 @@
-<%= form_tag(generate_recipes_path(@user.id), method: "post") do %>
-	Generate <%= select("Config", "n_recipes", @options, {:include_blank => false, :selected => @options[4]}) %>
-	 recipes. <%= submit_tag "Go" %>
-<% end %>
+<div class="content">
+    <div class="inner-content">
+    <%= form_tag(generate_recipes_path(@user.id), method: "post") do %>
+    	Generate <%= select("Config", "n_recipes", @options, {:include_blank => false, :selected => @options[4]}) %>
+    	 recipes. <%= submit_tag "Go" %>
+    <% end %>
+    </div>
+</div>

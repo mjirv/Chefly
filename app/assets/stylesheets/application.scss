@@ -1,0 +1,146 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+body {
+    font-family: helvetica;
+    background-image: image-url('salad-healthy-diet-spinach.jpg');
+    background-attachment: fixed;
+    background-size: cover;
+    margin: 0;
+    height: 100%;
+    margin: 0 auto 0 auto;
+}
+
+/* Stuff for the main page */
+
+div.dashboard {
+    width: 90%;
+    text-align: center;
+    margin: 100px auto 0 auto;
+}
+
+div.dashboard form.button_to {
+    display: inline-block;
+    margin: auto;
+}
+
+div.dashboard form.button_to input { 
+    text-align: center;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: #ffba00;
+    opacity: .9;
+    border: 0;
+    color: #222222;
+    width: 350px;
+    height: 350px;
+    margin: 0 10px 20px 10px;
+    border-radius: 5px;
+    display: table;
+}
+
+div.dashboard form.button_to input:hover {
+    background-color: #ffba00;
+    cursor: hand;
+    cursor: pointer;
+    opacity: 1;
+}
+
+div.menu {
+    background-color: #ffba00;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+div.menu form.button_to {
+    display: inline-block;
+    float: right;
+}
+
+div.menu form.button_to input {
+    text-align: right;
+    background: #ffba00;
+    color: #222222;
+    border: 0;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+div.menu form.button_to input:hover {
+    color: #eddddd;
+    cursor: hand;
+    cursor: pointer;
+}
+
+div.menu h1 {
+    display: inline-block;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    color: #222222;
+    margin-top: 0px;
+}
+
+div.menu h1 a {
+    color: #222222;
+    text-decoration: none;
+}
+
+/* Stuff for the content pages */
+
+div.content {
+    width: 80%;
+    height: 100%;
+    min-height: 100vh;
+    margin: auto;
+    background-color: rgba(150,150,150,.9);
+    padding: 50px 5% 50px 5%;
+}
+
+div.inner-content {
+    background-color: #eeffee;
+    display: block;
+    border-radius: 5px;
+    padding: 10px 3% 10px 3%;
+    margin: 10px 3% 10px 3%;
+}
+
+div.content input {
+    border: 0;
+    background-color: white;
+    border-radius: 2px;
+    margin: 2px 0 2px 2px;
+    padding: 2px;
+}
+
+div.content input[type="submit"] {
+    background-color: #ffba00;
+    border-radius: 2px;
+}
+
+div.content input[type="submit"]:hover {
+    background-color: rgb(150,150,150);
+    color: #ffba00;
+    cursor: hand;
+    cursor: pointer;
+}
+
+div.content a {
+    color: #ffba00;
+    font-weight: bold;
+    text-decoration: none;
+}

@@ -1,14 +1,18 @@
-<%= button_to "Back", gl_item_mapping_path(@gli.grocery_list_id), method: 'get' %>
-<br />
-<%= form_tag(map_post_grocery_list_item_path(@gli.id), method: 'post') do %>
-    <%= @recipe_item.name %>
+<div class="content">
+    <div class="inner-content">
+    <%= button_to "Back", gl_item_mapping_path(@gli.grocery_list_id), method: 'get' %>
     <br />
-    <%= @gli.to_s %>
-    <br />
-    <%= text_field_tag("item_amount", @recipe_item.item_amount) %>
-    <%= text_field_tag("item_name", @item_name) %>
-    <br />
-    <%= text_field_tag("unit_name", @recipe_item.quantity.unit.name) %>
-    <br />
-    <%= submit_tag "Save" %>
-<% end %>
+    <%= form_tag(map_post_grocery_list_item_path(@gli.id), method: 'post') do %>
+        <%= @recipe_item.name %>
+        <br />
+        <%= @gli.to_s %>
+        <br />
+        <%= text_field_tag("item_amount", @recipe_item.item_amount) %>
+        <%= text_field_tag("item_name", @item_name) %>
+        <br />
+        <%= text_field_tag("unit_name", @recipe_item.quantity.unit.name) %>
+        <br />
+        <%= submit_tag "Save" %>
+    <% end %>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+<% if not current_user %>
+  <script type="text/javascript">
+    window.location.href="/signup"  // put your correct path in a string here
+  </script>
+<% end %>
+<% if current_user %>
+  <script type="text/javascript">
+    window.location.href="/dashboard/<%= session[:user_id] %>"
+  </script>
+<% end %>
