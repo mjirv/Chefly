@@ -131,7 +131,7 @@ class UsersController < ApplicationController
 	def delete_recipe
 		delete_recipe_helper(params[:id], params[:recipe_id])
 		generate_grocery_list(params[:id])
-		redirect_to show_user_recipes_path(user_id)
+		redirect_to show_user_recipes_path(params[:id])
 	end
 
 	def delete_and_generate_recipe

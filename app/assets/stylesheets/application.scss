@@ -65,6 +65,7 @@ div.menu {
     width: 100%;
     position: fixed;
     top: 0;
+    opacity: .9;
     z-index: 1000;
 }
 div.menu form.button_to {
@@ -105,8 +106,7 @@ div.menu h1 a {
 div.content {
     width: 80%;
     height: 100%;
-    min-height: 100vh;
-    margin: auto;
+    margin: 100px auto 50px auto;
     background-color: rgba(150,150,150,.9);
     padding: 50px 5% 50px 5%;
 }
@@ -143,4 +143,33 @@ div.content a {
     color: #ffba00;
     font-weight: bold;
     text-decoration: none;
+}
+
+/* Make mobile responsive */
+@media screen and (max-width:640px) {
+  div.dashboard form.button_to input {
+    border-radius: 0;
+    width: auto;
+    height: auto;
+    margin: 0 0 5px 0;
+    padding: 5px;
+  }
+
+  div.dashboard form.button_to {
+    display: block;
+    margin: auto;
+  }
+
+  div.dashboard {
+    background-color: rgba(150,150,150,.9);
+    padding: 10px 5px 5px 5px;
+  }
+
+  input {
+    -webkit-appearance: none;
+  }
+
+  div.content {
+    overflow-wrap: break-word;
+  }
 }
