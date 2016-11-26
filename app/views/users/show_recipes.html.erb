@@ -1,4 +1,6 @@
 <div class="content">
+    <h2>Your Recipes</h2>
+    <%= button_to "Back", dashboard_path, method: :get %>
     <%= button_to "Add New Recipe", get_new_user_recipe_path, method: :post %>
     <% @recipes.each do |recipe| %>
         <div class="inner-content">

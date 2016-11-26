@@ -3,6 +3,7 @@
         <div class="inner-content">
 
             <h2>Edit Your Profile</h2>
+            <%= button_to "Back", dashboard_path(@user.id), method: :get %>
             <%= button_to "Change Password", change_password_path(@user.id), :method => :get %>
             <br />
             <%= form_for @user do |u|%>
