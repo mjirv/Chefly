@@ -11,20 +11,16 @@ namespace :parse_recipes do
 
   	def get_recipes(filepath)
 	  	# Make sure all \ns are "x;x " first
-	  	recipes = []
 		File.readlines(filepath).each do |line|
-			recipes << JSON.parse(line)
+			recipe_to_db(JSON.parse(line))
 		end
-		return recipes
 	end
 
-	def recipes_to_db(recipes)
-		recipes.each do |recipe|
-			recipe_items = recipe["ingredients"].split("x;x ")
-			db_recipe = Recipe.new(:name => recipe["name"], :url => recipe["url"])
-			db_recipe.save
-			recipe_items_to_db(recipe_items, db_recipe.id)
-		end
+	def recipe_to_db(recipe)
+		recipe_items = recipe["ingredients"].split("x;x ")
+		db_recipe = Recipe.new(:name => recipe["name"], :url => recipe["url"])
+		db_recipe.save
+		recipe_items_to_db(recipe_items, db_recipe.id)
 	end
 
 	def recipe_items_to_db(recipe_items, recipe_id)
@@ -110,8 +106,7 @@ namespace :parse_recipes do
 
 	# Uncomment this if there are already recipes in the DB and you want to overwrite them
 	# Recipe.all.map(&:delete)
-	recipes = get_recipes(args.recipes_path)
-	recipes_to_db(recipes)
+	get_recipes(args.recipes_path)
   end
 
 end
