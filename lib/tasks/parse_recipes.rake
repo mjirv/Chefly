@@ -11,9 +11,8 @@ namespace :parse_recipes do
 
   	def get_recipes(filepath)
 	  	# Make sure all \ns are "x;x " first
-		file = File.read(filepath).split("\n")
-		recipes = []
-		file.each do |line|
+	  	recipes = []
+		File.readlines(filepath).each do |line|
 			recipes << JSON.parse(line)
 		end
 		return recipes
