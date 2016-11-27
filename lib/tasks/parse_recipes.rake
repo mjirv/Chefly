@@ -108,7 +108,8 @@ namespace :parse_recipes do
 		return item_id
 	end
 
-	Recipe.all.map(&:delete)
+	# Uncomment this if there are already recipes in the DB and you want to overwrite them
+	# Recipe.all.map(&:delete)
 	recipes = get_recipes(args.recipes_path)
 	recipes_to_db(recipes)
   end
