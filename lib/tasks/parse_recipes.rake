@@ -12,7 +12,7 @@ namespace :parse_recipes do
   	def get_recipes(filepath)
   		n = 0
 		File.readlines(filepath).each do |line|
-			print "#{n}"
+			print "#{n} "
 			n += 1
 		end
 	end
@@ -67,7 +67,7 @@ namespace :parse_recipes do
 					ri.save
 				end
 			rescue
-				print "item error"
+				print "item error "
 			end
 		end
 
