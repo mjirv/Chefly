@@ -12,6 +12,7 @@ namespace :parse_recipes do
   	def get_recipes(filepath)
   		n = 0
 		File.readlines(filepath).each do |line|
+			recipe_to_db(JSON.parse(line))
 			print "#{n} "
 			n += 1
 		end
