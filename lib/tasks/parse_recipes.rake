@@ -68,7 +68,7 @@ namespace :parse_recipes do
 					ri.save
 				end
 			rescue
-				print "item error"
+				print "item error "
 			end
 		end
 
