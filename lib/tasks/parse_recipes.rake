@@ -10,14 +10,13 @@ namespace :parse_recipes do
 	end
 
   	def get_recipes(filepath)
-	  	# Make sure all \ns are "x;x " first
 		File.readlines(filepath).each do |line|
 			recipe_to_db(JSON.parse(line))
 		end
 	end
 
 	def recipe_to_db(recipe)
-		recipe_items = recipe["ingredients"].split("x;x ")
+		recipe_items = recipe["ingredients"].split("\n")
 		db_recipe = Recipe.new(:name => recipe["name"], :url => recipe["url"])
 		db_recipe.save
 		recipe_items_to_db(recipe_items, db_recipe.id)
@@ -28,6 +27,8 @@ namespace :parse_recipes do
 			words = recipe_item.split(" ")
 			# Fraction like 1/4 tablespoon salt
 			if words[0].nil?
+			elsif words[1].nil?
+
 			elsif words[0].match(/^[1-9]\/[1-9]$/)
 				unit = unit_to_db(words[1].downcase())
 				fraction = words[0].split("/")
