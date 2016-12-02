@@ -4,6 +4,7 @@ This recipe app allows users to randomly select recipes from a database and gene
 
 ### To deploy:
 * Clone onto the production machine
+* Run `bundle install`
 * Set a production `secret_key_base` environment variable
 * Update `config/database.yml` to use your favorite database, configure it appropriately, and start it
 * Change the email and password in `lib/tasks/create_user.rake` to something you want to use
