@@ -23,6 +23,11 @@ namespace :parse_recipes do
 		db_recipe = Recipe.new(:name => recipe["name"], :url => recipe["url"])
 		db_recipe.save
 		recipe_items_to_db(recipe_items, db_recipe.id)
+
+		# We don't want recipes with no items
+		if db_recipe.recipe_items == []
+			db_recipe.delete
+		end
 	end
 
 	def recipe_items_to_db(recipe_items, recipe_id)
