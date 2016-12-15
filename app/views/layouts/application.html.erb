@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>RecipesServer</title>
+    <title><%= ENV["APP_NAME"] %></title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -12,12 +12,12 @@
   <body>
     <div class="menu">
       <% if not current_user %>
-          <h1 class="title">Michael's Recipe App</h1> 
+          <h1 class="title"><%= ENV["APP_NAME"] %></h1> 
           <%= button_to 'Sign Up', '/signup', method: :get %>
           <%= button_to "Login", '/login', method: :get %>
       <% end %>
       <% if current_user %>
-          <h1 class="title"><%= link_to "Michael's Recipe App", dashboard_path(:id => session[:user_id]), method: :get %></h1> 
+          <h1 class="title"><%= link_to ENV["APP_NAME"], dashboard_path(:id => session[:user_id]), method: :get %></h1> 
           <%= button_to "Logout", '/logout', method: :delete %>
           <%= button_to "Edit Profile", edit_users_path(:id => session[:user_id]), method: :get %>
     	    <%= button_to "Home", dashboard_path(:id => session[:user_id]), method: :get %>

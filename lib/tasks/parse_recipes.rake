@@ -24,6 +24,7 @@ namespace :parse_recipes do
 		db_recipe.save
 		recipe_items_to_db(recipe_items, db_recipe.id)
 
+		puts recipe_items
 		# We don't want recipes with no items
 		if db_recipe.recipe_items == []
 			db_recipe.delete
@@ -72,8 +73,8 @@ namespace :parse_recipes do
 					ri = RecipeItem.new(:recipe_id => recipe_id, :item_id => item, :quantity_id => q.id, :name => recipe_item)
 					ri.save
 				end
-			rescue
-				print "item error "
+			rescue => e
+				print "#{e} item error "
 			end
 		end
 
