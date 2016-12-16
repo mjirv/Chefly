@@ -8,6 +8,7 @@ This recipe app allows users to randomly select recipes from a database and gene
 * Set a production `secret_key_base` environment variable
 * Update `config/database.yml` to use your favorite database, configure it appropriately, and start it
 * Change the email and password in `lib/tasks/create_user.rake` to something you want to use
+* Run `RAILS_ENV=production rake db:schema:load`
 * cd to `bin` and run `RAILS_ENV=production rake user:create_user`
 * Run `RAILS_ENV=production rake items_to_db:items_to_db["/path/to/basic_foods.txt"]`
 * Gunzip `recipeitems-latest.json.gz`
