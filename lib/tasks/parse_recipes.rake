@@ -24,7 +24,6 @@ namespace :parse_recipes do
 		db_recipe.save
 		recipe_items_to_db(recipe_items, db_recipe.id)
 
-		puts recipe_items
 		# We don't want recipes with no items
 		if db_recipe.recipe_items == []
 			db_recipe.delete
