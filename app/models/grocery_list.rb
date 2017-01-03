@@ -27,7 +27,7 @@ class GroceryList < ApplicationRecord
             new_amount = mergeable_glis.map{ |mgli| mgli.amount }.reduce(:+) + gli.amount
 
             # Add the merged GLI
-            new_merged_gli = GroceryListItem.new(:name => gli.name, :amount => new_amount, :grocery_list_id => gli.id, :recipe_item_id => gli.recipe_item_id, :visible => true, :combined => true, :user_edited => false)
+            new_merged_gli = GroceryListItem.create(:name => gli.name, :amount => new_amount, :grocery_list_id => gli.id, :recipe_item_id => gli.recipe_item_id, :visible => true, :combined => true, :user_edited => false)
 
             # Make the earlier ones invisible
             mglis_ids = mergeable_glis.map(&:id) + [gli.id]
