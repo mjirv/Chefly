@@ -48,7 +48,7 @@ class GroceryList < ApplicationRecord
     end
 
     def get_glis
-        glis = GroceryListItem.where(:grocery_list_id => self.id).where.not(:visible => false).where.not(:combined => true).where.not(:user_edited => true).joins(:recipe_item).joins('INNER JOIN quantities on recipe_items.quantity_id = quantities.id').select('grocery_list_items.id AS id, grocery_list_items.name AS name, quantities.unit_id AS unit_id, grocery_list_items.recipe_item_id AS recipe_item_id, recipe_items.item_id as item_id')
+        glis = GroceryListItem.where(:grocery_list_id => self.id).where(:visible => [true, nil]).where(:combined => [false, nil]).where(:user_edited => [true, nil]).joins(:recipe_item).joins('INNER JOIN quantities on recipe_items.quantity_id = quantities.id').select('grocery_list_items.id AS id, grocery_list_items.name AS name, quantities.unit_id AS unit_id, grocery_list_items.recipe_item_id AS recipe_item_id, recipe_items.item_id as item_id')
         return glis
     end
 
