@@ -3,9 +3,9 @@ class UsersController < ApplicationController
 
     def new
         @user = User.new
-     end
+    end
   
-      def create
+    def create
         @user = User.new(user_params)
         @user.status = User.statuses["active"]
         @user.permission = User.permissions["user"]
@@ -16,7 +16,7 @@ class UsersController < ApplicationController
             flash.alert = "An error occurred."
             redirect_to '/signup'
         end
-      end
+    end
 
     def show
         @user = User.find(params[:id])
