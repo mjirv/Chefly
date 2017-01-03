@@ -18,7 +18,7 @@ class GroceryList < ApplicationRecord
         # Loop through each of the glis
         while glis.length != 0
             # "Pop" the first one
-            gli = glis.shift
+            gli = glis.first
 
             # Pull those with same item ID and unit ID
             mergeable_glis = glis.select{ |candidate| candidate.item_id == gli.item_id && candidate.unit_id == gli.unit_id }
