@@ -13,7 +13,7 @@ class GroceryList < ApplicationRecord
     def deduplicate
         # Merges multiple grocery list items with the same item ID and unit type
         # Get the list of GLI IDs, item IDs, unit IDs, and GLI names
-        glis = GroceryListItem.where(:grocery_list_id => self.id).where.not(:visible => false).where.not(:combined => true).where.not(:user_edited => true).joins(:recipe_item).joins('INNER JOIN quantities on recipe_items.quantity_id = quantities.id').select('grocery_list_items.id AS id, grocery_list_items.name AS name, quantities.unit_id AS unit_id, grocery_list_items.recipe_item_id AS recipe_item_id, recipe_items.item_id as item_id')
+        glis = get_glis()
 
         # Loop through each of the glis
         while glis.length != 0
@@ -35,6 +35,7 @@ class GroceryList < ApplicationRecord
                 g.visible = false
                 g.save
             end
+            glis = get_glis()
         end
     end
 
@@ -44,6 +45,11 @@ class GroceryList < ApplicationRecord
             list << item.to_s
         end
         list
+    end
+
+    def get_glis
+        glis = GroceryListItem.where(:grocery_list_id => self.id).where.not(:visible => false).where.not(:combined => true).where.not(:user_edited => true).joins(:recipe_item).joins('INNER JOIN quantities on recipe_items.quantity_id = quantities.id').select('grocery_list_items.id AS id, grocery_list_items.name AS name, quantities.unit_id AS unit_id, grocery_list_items.recipe_item_id AS recipe_item_id, recipe_items.item_id as item_id')
+        return glis
     end
 
     def grocery_list_items
