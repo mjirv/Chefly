@@ -74,7 +74,6 @@ class UsersController < ApplicationController
         if GroceryList.where(:user_id => user_id).where(:status => GroceryList.statuses["active"]) != []
             if refresh == false
                 update_grocery_list(user_id, redirect_to_gl)
-            end
             else
                 GroceryList.where(:user_id => user_id).where(:status => [GroceryList.statuses["inactive"], nil]).map do |g| 
                     g.status = GroceryList.statuses["inactive"]
@@ -205,7 +204,7 @@ class UsersController < ApplicationController
         end
     end
 
-      def user_params
+    def user_params
         params.require(:user).permit(:first_name, :last_name, :email, :password, :status, :permission, :password_confirmation, :new_password)
     end
 
