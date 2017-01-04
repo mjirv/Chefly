@@ -60,7 +60,7 @@ class UsersController < ApplicationController
               link.save
           end
 
-          generate_grocery_list(user_id, "no_redirect")
+          generate_grocery_list(user_id, "no_redirect", refresh=true)
           redirect_to show_user_recipes_path(:id => user_id), :method => :get
     end
 
