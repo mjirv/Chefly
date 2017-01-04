@@ -87,7 +87,7 @@ class UsersController < ApplicationController
     def update_grocery_list(user_id, redirect_to_gl)
         # We only care about the new recipe
         # Assumption is we're only adding one recipe
-        last_recipe_id = RecipeToUserLink.where(RecipeToUserLink.where(:status => RecipeToUserLink.statuses["active"]).where(:user_id => user_id).last.recipe_id)
+        last_recipe_id = RecipeToUserLink.where(:status => RecipeToUserLink.statuses["active"]).where(:user_id => user_id).last.recipe_id
         recipe_items = RecipeItem.where(:recipe_id => last_recipe_id)
         
         # Assume there is only one active list per user, which there should be
