@@ -91,10 +91,9 @@ class UsersController < ApplicationController
         recipe_items = []
         if last_recipe_id
             recipe_items = RecipeItem.where(:recipe_id => last_recipe_id)
-            
-            # Assume there is only one active list per user, which there should be
-            grocery_list = GroceryList.where(:user_id => user_id).where(:status => GroceryList.statuses["active"]).first
         end
+        # Assume there is only one active list per user, which there should be
+        grocery_list = GroceryList.where(:user_id => user_id).where(:status => GroceryList.statuses["active"]).first
         add_recipe_items_to_list(recipe_items, grocery_list, redirect_to_gl)
     end
 
