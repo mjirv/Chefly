@@ -1,6 +1,6 @@
 namespace :remove_bad_recipes do
     desc "Removes recipes with an item where the item and unit name are the same, for example '1 pound 1 pound'"
-    task :remove_bad_recipes => [:environment] do |t| do
+    task :remove_bad_recipes => [:environment] do |t|
         RecipeItem.each do |recipe_item|
             recipe_name = recipe_item.name
             first_part = recipe_name.slice(0, stringy.length/2 + 1).strip
