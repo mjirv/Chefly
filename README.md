@@ -13,5 +13,6 @@ This recipe app allows users to randomly select recipes from a database and gene
 * Run `RAILS_ENV=production rake items_to_db:items_to_db["/path/to/basic_foods.txt"]`
 * Gunzip `recipeitems-latest.json.gz`
 * Run `RAILS_ENV=production rake parse_recipes:recipes_to_db_object["/path/to/recipeitems-latest.json"]`
+* Run `RAILS_ENV=production rake remove_bad_recipes:remove_bad_recipes`
 * Start the server, for example with `RAILS_ENV=production rails s -p 80`
 * Navigate to the running webpage, log in as the admin user you created, and do what you want!
