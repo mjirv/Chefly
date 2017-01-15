@@ -204,6 +204,7 @@ class UsersController < ApplicationController
             user_recipe = user_recipe.first
             user_recipe.status = RecipeToUserLink.statuses["inactive"]
             user_recipe.save
+            generate_new_grocery_list(user_id, false)
         end
     end
 
