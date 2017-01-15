@@ -80,7 +80,7 @@ class UsersController < ApplicationController
                     g.save
                 end
                 RecipeToUserLink.where(:status => RecipeToUserLink.statuses["active"]).where(:user_id => user_id).map do |rul|
-                    rul.status = RecupeToUserLink.statuses["inactive"]
+                    rul.status = RecipeToUserLink.statuses["inactive"]
                     rul.save
                 end
                 generate_new_grocery_list(user_id, redirect_to_gl)
