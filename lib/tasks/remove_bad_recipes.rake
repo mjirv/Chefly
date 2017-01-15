@@ -8,6 +8,7 @@ namespace :remove_bad_recipes do
             if first_part == second_part
                 recipe = Recipe.find(recipe_item.recipe_id)
                 recipe.delete
+                puts "Deleted recipe #{recipe.name}"
             end
         end
     end
