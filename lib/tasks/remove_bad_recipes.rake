@@ -6,7 +6,16 @@ namespace :remove_bad_recipes do
             first_part = recipe_name.slice(0, recipe_name.length/2 + 1).strip
             second_part = recipe_name.slice(recipe_name.length/2, recipe_name.length).strip
             if first_part == second_part
+                delete_recipe(recipe_item.recipe_id)
                 recipe = Recipe.find(recipe_item.recipe_id)
+                recipe.delete
+                puts "Deleted recipe #{recipe.name}"
+            end
+        end
+
+        def delete_recipe(recipe_id)
+            recipe = Recipe.find(recipe_item.recipe_id) rescue nil
+            if recipe != nil
                 recipe.delete
                 puts "Deleted recipe #{recipe.name}"
             end
