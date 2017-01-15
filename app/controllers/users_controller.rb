@@ -97,6 +97,10 @@ class UsersController < ApplicationController
 
     def generate_new_grocery_list(user_id, redirect_to_gl)
           recipe_items = RecipeItem.where(:recipe_id => Recipe.where(:id => RecipeToUserLink.where(:status => RecipeToUserLink.statuses["active"]).where(:user_id => user_id).pluck(:recipe_id)))
+          Grocery_List.where(:user_id => user_id, :status => GroceryList.statuses["active"]).map do |gl|
+              gl.status = GroceryList.statuses["inactive"]
+              gl.save
+            end
           grocery_list = GroceryList.create(:user_id => user_id, :status => GroceryList.statuses["active"])
 
           add_recipe_items_to_list(recipe_items, grocery_list, redirect_to_gl)
