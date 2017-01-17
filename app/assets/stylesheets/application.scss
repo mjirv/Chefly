@@ -32,11 +32,13 @@ div.dashboard {
     margin: 100px auto 0 auto;
 }
 
+// Main dashboard button container
 div.dashboard form.button_to {
     display: inline-block;
     margin: auto;
 }
 
+// Main dashboard buttons
 div.dashboard form.button_to input { 
     text-align: center;
     letter-spacing: 2px;
@@ -60,6 +62,7 @@ div.dashboard form.button_to input:hover {
     opacity: 1;
 }
 
+// Main (top) menu
 div.menu {
     background-color: #222222;
     width: 100%;
@@ -68,11 +71,14 @@ div.menu {
     opacity: .9;
     z-index: 1000;
 }
+
+// Main menu link containers
 div.menu form.button_to {
     display: inline-block;
     float: right;
 }
 
+// Main menu links
 div.menu form.button_to input {
     text-align: right;
     background: #222222;
@@ -88,6 +94,7 @@ div.menu form.button_to input:hover {
     cursor: pointer;
 }
 
+// Site title
 div.menu h1 {
     display: inline-block;
     margin-bottom: 5px;
@@ -101,12 +108,13 @@ div.menu h1 a {
     text-decoration: none;
 }
 
+// Get rid of automatic button styling
 input {
     -webkit-appearance: none;
 }
 
 /* Stuff for the content pages */
-
+// Outer container
 div.content {
     width: 80%;
     height: 100%;
@@ -115,6 +123,7 @@ div.content {
     padding: 50px 5% 50px 5%;
 }
 
+// Inner container
 div.inner-content {
     background-color: #eeffee;
     display: block;
@@ -123,6 +132,7 @@ div.inner-content {
     margin: 10px 3% 10px 3%;
 }
 
+// Form buttons
 div.content input {
     border: 0;
     background-color: white;
@@ -142,6 +152,7 @@ div.content input[type="submit"]:hover {
     cursor: pointer;
 }
 
+// Content links
 div.content a {
     color: #ffba00;
     font-weight: bold;
@@ -150,25 +161,27 @@ div.content a {
 
 /* Make mobile responsive */
 @media screen and (max-width:736px) {
-  div.dashboard form.button_to input {
-    border-radius: 0;
-    width: auto;
-    height: auto;
-    margin: 0 0 5px 0;
-    padding: 5px;
-  }
+    // Dashboard buttons smaller and rectangular
+    div.dashboard form.button_to input {
+        border-radius: 0;
+        width: auto;
+        height: auto;
+        margin: 0 0 5px 0;
+        padding: 5px;
+    }
 
-  div.dashboard form.button_to {
-    display: block;
-    margin: auto;
-  }
+    div.dashboard form.button_to {
+        display: block;
+        margin: auto;
+    }
 
-  div.dashboard {
-    background-color: rgba(150,150,150,.9);
-    padding: 10px 5px 5px 5px;
-  }
+    div.dashboard {
+        background-color: rgba(150,150,150,.9);
+        padding: 10px 5px 5px 5px;
+    }
 
-  div.content {
-    overflow-wrap: break-word;
-  }
+    // Wrap linebreaks in content
+    div.content {
+        overflow-wrap: break-word;
+    }
 }

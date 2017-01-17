@@ -1,7 +1,9 @@
 class SessionsController < ApplicationController
+    # Do I need this?
     def new
     end
 
+    # Called when a user logs in (i.e. creates a session)
     def create
         @user = User.find_by_email(params[:session][:email])
         if @user && @user.authenticate(params[:session][:password])
