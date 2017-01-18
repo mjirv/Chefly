@@ -2,6 +2,8 @@
     <div class="inner-content">
     <%= button_to "Back", gl_item_mapping_path(@gli.grocery_list_id), method: 'get' %>
     <br />
+
+    <%# Form to map the GroceryListItem to the right ITem %>
     <%= form_tag(map_post_grocery_list_item_path(@gli.id), method: 'post') do %>
         <%= @recipe_item.name %>
         <br />

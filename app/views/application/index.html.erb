@@ -1,8 +1,13 @@
+<%# The index page %>
+
+<%# Redirect to the signup page if the user isn't logged in %>
 <% if not current_user %>
   <script type="text/javascript">
-    window.location.href="/signup"  // put your correct path in a string here
+    window.location.href="/signup"
   </script>
 <% end %>
+
+<%# Redirect to the user's dashboard if they are logged in %>
 <% if current_user %>
   <script type="text/javascript">
     window.location.href="/dashboard/<%= session[:user_id] %>"

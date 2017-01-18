@@ -1,6 +1,8 @@
 <div class="content">
     <div class="inner-content">
     <%= button_to "Back", edit_grocery_list_path(@item.grocery_list_id), method: 'get' %>
+
+    <%# Form to edit a GroceryListItem's amount or name (without editing the Item it corresponds to) %>
     <%= form_for(@item) do |i| %>
     	<%= i.text_field :string_amount %>
     	<%= i.text_field :name %>

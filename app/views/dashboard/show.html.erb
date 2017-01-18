@@ -1,8 +1,12 @@
 <div class="dashboard">
+    <%# Only show the recipes button if the user has recipes %>
     <% if @recipes_length > 0 %>
         <%= button_to "Recipes", show_user_recipes_path(@user.id), method: :get %>
     <% end %>
+
     <%= button_to "Generate New Recipes", config_recipe_generation_path(@user.id), method: :get %>
+
+    <%# Only show the grocery list button if the user has an active grocery list %>
     <% if @grocery_list %>
         <%= button_to "Grocery List", grocery_list_path(@grocery_list_id), method: :get %>
         <%= button_to "Email Recipes and Grocery List", email_grocery_list_path(@grocery_list_id), method: :post %>

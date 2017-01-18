@@ -2,9 +2,11 @@
     <div class="inner-content">
     <h2><strong>Your Grocery List</strong></h2>
     <h4>Mapping</h4>
+    <%# You can go back (to not save the mapping) or hit done to save it %>
     <%= button_to "Back", grocery_list_path(@grocery_list.id), :method => :get %>
     <%= button_to "Done", update_and_show_grocery_list_path(@grocery_list.id), :method => :put %>
     <p>
+        <%# Lists each of the items so you can click to map it %>
     	<% @grocery_list_items.each do |item| %>
     		<% if item.name[-1] != ":" %>
     			<%= item.recipe_item.name %> | <%= item.to_s %> | <%= item.recipe_item.item.name %> | <%= link_to "Map", map_grocery_list_item_path(item.id), :method => :get %>

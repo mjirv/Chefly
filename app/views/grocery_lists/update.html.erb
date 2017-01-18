@@ -1,7 +1,9 @@
 <div class="content">
-    <div class="inner-content"
+    <div class="inner-content">
     <h2><strong>Your Grocery List</strong></h2>
     <%= button_to "Done", grocery_list_path(@grocery_list.id), :method => :get %>
+
+    <%# List the items in the GroceryList with a button to edit each of them %>
     <p>
     	<% @grocery_list.grocery_list_items.each do |item| %>
     		<% if item.name[-1] != ":" %>

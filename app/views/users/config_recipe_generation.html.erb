@@ -2,8 +2,10 @@
     <h2>Generate New Recipes</h2>
     <%= button_to "Back", dashboard_path, method: :get %>
     <p>Warning: this will replace your current recipes. If you just want to add or delete individual recipes, head on over to the <%=link_to "Recipes", show_user_recipes_path(@user.id), method: :get %> section.</p>
+    
     <div class="inner-content">
     <%= form_tag(generate_recipes_path(@user.id), method: "post") do %>
+        <%# Default to creating 4 recipes %>
     	Generate <%= select("Config", "n_recipes", @options, {:include_blank => false, :selected => @options[4]}) %>
     	 recipes. <%= submit_tag "Go" %>
     <% end %>

@@ -1,6 +1,7 @@
 require 'mail'
 
 namespace :send_recipes do
+  # We don't really use this task anymore because this process happens in controllers
   desc "Creates five new recipes for a user and deactivates old ones"
   task :get_recipes_for_user, [:user_email, :n_recipes] => [:environment] do |t, args|
   	begin
@@ -26,6 +27,7 @@ namespace :send_recipes do
   	end
   end
 
+  # No longer use this either
   desc "Generates a grocery list from the user's active recipes"
   task :generate_grocery_list, [:user_email] => [:environment] do |t, args|
   	begin
@@ -39,9 +41,13 @@ namespace :send_recipes do
 	  		end
 	  	end
 
+        # Get the active RecipeItems
   		recipe_items = RecipeItem.where(:recipe_id => Recipe.where(:id => RecipeToUserLink.where(:status => RecipeToUserLink.statuses["active"]).where(:user_id => user_id).pluck(:recipe_id)))
+
+        # Create a new GroceryList
 	  	grocery_list = GroceryList.create(:user_id => user_id, :status => GroceryList.statuses["active"])
 
+        # This is done better elsewhere
   		recipe_items.each do |ri|
   			item_name = ri.item.name
   			if item_name.match(/[a-z]+/) # TODO: and doesn't end in a colon
@@ -64,14 +70,17 @@ namespace :send_recipes do
 	end
   end
 
+  # This is pretty much duplicated in the UserController; we don't use this
   desc "Sends a user's active recipes to them"
   task :send_recipes_to_user, [:user_email, :from_email, :from_password] => [:environment] do |t, args|
   	#begin
+        # Get the user, their active Recipes, and their active GroceryList
 	  	user_id = User.where(:email => args.user_email).first.id
 	  	recipes = Recipe.where(:id => RecipeToUserLink.where(:status => RecipeToUserLink.statuses["active"]).where(:user_id => user_id).pluck(:recipe_id))
 	  	grocery_list = GroceryList.where(:user_id => user_id, :status => GroceryList.statuses["active"]).first
 	  	message = ""
 
+        # At the start of the message, list each of the Recipes
 	  	recipes.each do |recipe|
 	  		message << 
 			"<b>#{recipe.name}</b>
@@ -80,11 +89,13 @@ namespace :send_recipes do
 			<br /><br />"
 	  	end
 
+        # Now add the GroceryList
 	  	message <<
 		"<b>Shopping List</b>
 		<br />#{grocery_list.get_list.join("<br />")}"
 	  	puts message
 
+        # Change this if you want to do things another way
 	  	options = { :address => 'smtp.gmail.com',
 	  				:port => 587,
 	  				:domain => 'gmail.com',
