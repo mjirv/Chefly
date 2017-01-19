@@ -25,6 +25,11 @@ body {
 }
 
 /* Stuff for the main page */
+span.tagline {
+    color: #ffba00; 
+}
+
+/* Stuff for the user dashboard */
 
 div.dashboard {
     width: 90%;
@@ -121,24 +126,25 @@ div.content {
     margin: 100px auto 50px auto;
     background-color: rgba(150,150,150,.9);
     padding: 50px 5% 50px 5%;
+    max-width: 400px;
 }
 
 // Inner container
 div.inner-content {
-    background-color: #eeffee;
+    background-color: #eddddd;
     display: block;
     border-radius: 5px;
     padding: 10px 3% 10px 3%;
     margin: 10px 3% 10px 3%;
 }
 
-// Form buttons
+// Form input
 div.content input {
     border: 0;
     background-color: white;
     border-radius: 2px;
     margin: 2px 0 2px 2px;
-    padding: 2px;
+    padding: 10px;
 }
 
 div.content input[type="submit"] {
@@ -161,6 +167,12 @@ div.content a {
 
 /* Make mobile responsive */
 @media screen and (max-width:736px) {
+    // Stuff for the main page
+    span.tagline {
+        background-color: #ffba00; 
+        color: #222222;
+    }
+
     // Dashboard buttons smaller and rectangular
     div.dashboard form.button_to input {
         border-radius: 0;

@@ -2,9 +2,16 @@
 
 <%# Redirect to the signup page if the user isn't logged in %>
 <% if not current_user %>
-  <script type="text/javascript">
-    window.location.href="/signup"
-  </script>
+    <div class="content" style="background-color: #222222; color: #eddddd; max-width: 400px; opacity: .9">
+        <div align="center">
+            <b class="title" style="font-size: 3em"><%= ENV["APP_NAME"] %></b>
+            <span class="tagline"><em>Find recipes and groceries with the touch of a button</em></span>
+        </div>
+        <br />
+        <div class="inner-content" style="color: #222222; background-color: #eddddd">
+            <%= render partial: "shared/signup" %> 
+        </div>
+    </div>
 <% end %>
 
 <%# Redirect to the user's dashboard if they are logged in %>

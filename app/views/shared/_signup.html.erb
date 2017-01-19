@@ -1,0 +1,11 @@
+<h1>Sign up</h1>
+<%= form_for User.new do |u|%>
+<%= u.text_field :first_name, :placeholder => "First Name" %>
+<br />
+<%= u.text_field :last_name, :placeholder => "Last Name" %>
+<br />
+<%= u.email_field :email, :placeholder => "Email" %>
+<br />
+<%= u.password_field :password, :placeholder => "Password" %>
+<%= u.submit "Sign Up", class: 'btn-submit' %>
+<% end %>
