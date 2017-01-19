@@ -1,6 +1,6 @@
 <div class="content">
+    <h2>Your Grocery List</h2>
     <div class="inner-content">
-    <h2><strong>Your Grocery List</strong></h2>
     <%= button_to "Back", dashboard_path(@grocery_list.user_id), method: :get %>
     <%= button_to "Edit", edit_grocery_list_path(@grocery_list.id), method: :get %>
 
