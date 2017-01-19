@@ -1,22 +1,21 @@
 <div class="content">
     <h2>Your Grocery List</h2>
-    <div class="inner-content">
     <%= button_to "Back", dashboard_path(@grocery_list.user_id), method: :get %>
     <%= button_to "Edit", edit_grocery_list_path(@grocery_list.id), method: :get %>
+    <div class="inner-content">
+        <%# Only display the mapping button if the user is an admin %>
+        <% if User.find(session[:user_id]).permission == "admin" %>
+            <%= button_to "Mapping", gl_item_mapping_path(@grocery_list.id), method: :get %>
+        <% end %>
 
-    <%# Only display the mapping button if the user is an admin %>
-    <% if User.find(session[:user_id]).permission == "admin" %>
-        <%= button_to "Mapping", gl_item_mapping_path(@grocery_list.id), method: :get %>
-    <% end %>
-
-    <%# List the items in the grocery list %>
-    <ul>
-    	<% @grocery_list.grocery_list_items.each do |item| %>
-    		<% if item.recipe_item.name[-1] != ":" %>
-    			<li><%= item.to_s %>
-    			<br />
-    		<% end %>
-    	<% end %>
-    </ul>
+        <%# List the items in the grocery list %>
+        <ul>
+            <% @grocery_list.grocery_list_items.each do |item| %>
+                <% if item.recipe_item.name[-1] != ":" %>
+                    <li><%= item.to_s %>
+                    <br />
+                <% end %>
+            <% end %>
+        </ul>
     </div>
 </div>
