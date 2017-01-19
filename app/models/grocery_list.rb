@@ -39,6 +39,7 @@ class GroceryList < ApplicationRecord
         end
     end
 
+    # Get the current GroceryList as a string
     def get_list
         list = []
         self.grocery_list_items.each do |item|
@@ -47,15 +48,18 @@ class GroceryList < ApplicationRecord
         list
     end
 
+    # Gets the GroceryList's uncombined, visible, active GLIs
     def get_glis
         glis = GroceryListItem.where(:grocery_list_id => self.id).where(:visible => [true, nil]).where(:combined => [false, nil]).where(:user_edited => [true, nil]).joins(:recipe_item).joins('INNER JOIN quantities on recipe_items.quantity_id = quantities.id').select('grocery_list_items.id AS id, grocery_list_items.name AS name, quantities.unit_id AS unit_id, grocery_list_items.recipe_item_id AS recipe_item_id, recipe_items.item_id as item_id, grocery_list_items.amount as amount')
         return glis
     end
 
+    # Get all visible GroceryListItems for the current GroceryList
     def grocery_list_items
         return GroceryListItem.where(:grocery_list_id => self.id).where.not(:visible => false)
     end
 
+    # Calls regenerate on GLIs that are combined and aren't user-edited
     def regenerate_items
         glis = grocery_list_items
         glis.each do |gli|

@@ -6,6 +6,7 @@ class RecipeItem < ApplicationRecord
 	belongs_to :item
 	belongs_to :quantity
 
+    # Makes sure the item_amount is right
     before_create do
         if self.quantity.unit.name == "NULL_UNIT"
             self.item_amount = self.quantity.amount.ceil.to_i

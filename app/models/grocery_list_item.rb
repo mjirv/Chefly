@@ -5,6 +5,7 @@ class GroceryListItem < ApplicationRecord
 	belongs_to :grocery_list
 	belongs_to :recipe_item
 
+    # Needed to convert the string amount to fractions for display in the GroceryList
 	FRACTION = {
 		"0"  => "",
 		"00" => "",
@@ -17,6 +18,7 @@ class GroceryListItem < ApplicationRecord
 		"75" => "3/4 "
 	}
 
+    # Make sure every GLI has an entry for visible and combined
 	before_create do
 		self.generate_string_amount
 		if self.visible == nil
@@ -27,6 +29,7 @@ class GroceryListItem < ApplicationRecord
 		end
 	end
 
+    # Convert the amount to a readable fraction
 	def generate_string_amount
 		if self.amount
 			whole, decimal = self.amount.round(2).to_s.split(".")
@@ -40,15 +43,18 @@ class GroceryListItem < ApplicationRecord
 		end
 	end
 
+    # Returns the GLI's Item's name
 	def get_item_name
 		item = Item.find(RecipeItem.find(self.recipe_item_id).item_id)
 		return item.name
 	end
 
+    # So you can print the GLI
 	def to_s
 		"#{self.string_amount}#{self.name}"
 	end
 
+    # Refreshes the string_amount and name in case anything has changed
 	def regenerate
 		self.string_amount = to_string_amount(self.recipe_item.quantity.amount)
 		self.name = "#{to_unit_name(self.recipe_item.quantity.unit.name)} #{self.recipe_item.item.name}"
@@ -56,6 +62,7 @@ class GroceryListItem < ApplicationRecord
 	end
 
 	private
+    # Not totally sure why we need this and generate_string_amount
 	def to_string_amount(amount)
 		string_amount = ""
 		if amount
@@ -69,6 +76,7 @@ class GroceryListItem < ApplicationRecord
 		return string_amount
 	end
 
+    # Changes the unit name to nothing instead of NULL_UNIT if needed
 	def to_unit_name(name)
 		if name == "NULL_UNIT"
 			name = ""
