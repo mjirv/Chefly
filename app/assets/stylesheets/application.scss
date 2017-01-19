@@ -127,6 +127,7 @@ div.content {
     background-color: rgba(150,150,150,.9);
     padding: 50px 5% 50px 5%;
     max-width: 400px;
+    overflow-wrap: break-word;
 }
 
 // Inner container
@@ -190,10 +191,5 @@ div.content a {
     div.dashboard {
         background-color: rgba(150,150,150,.9);
         padding: 10px 5px 5px 5px;
-    }
-
-    // Wrap linebreaks in content
-    div.content {
-        overflow-wrap: break-word;
     }
 }
