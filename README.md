@@ -33,5 +33,5 @@ If you're running Chefly locally, there's Chromedriver Python code embedded that
 * Navigate to the running webpage, log in as the admin user you created, and do what you want!
 
 ## Acknowledgements
-* I use a list of basic food items adapted from Python's NLTK library
-* My recipe list came from an open source GitHub project. I thought I wrote down a link to the project, but I can't seem to find it now. I'm actively searching and will update this with attribution as soon as I find it!
+* I seed my database of items with a list of basic food items adapted from Python's NLTK library
+* My recipe list came from the Open Recipes database by Fictive Kin at https://github.com/fictivekin/openrecipes.
