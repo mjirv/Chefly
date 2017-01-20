@@ -1,6 +1,8 @@
 # Chefly
 This recipe app allows users to randomly select recipes from a database and generate grocery lists based on those recipes. I was tired of spending time looking for recipes and manually turning them into a grocery list every week (adding all the groceries up, seeing what overlapped, etc). So I built a Rails app!
 
+![Index page](http://i.imgur.com/LH2RWOA.jpg)
+
 You can use Chefly live at www.chefly.xyz or deploy it for yourself following the instructions here.
 
 ## Overview
