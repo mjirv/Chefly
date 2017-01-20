@@ -34,4 +34,4 @@ If you're running Chefly locally, there's Chromedriver Python code embedded that
 
 ## Acknowledgements
 * I use a list of basic food items adapted from Python's NLTK library
-* 
+* My recipe list came from an open source GitHub project. I thought I wrote down a link to the project, but I can't seem to find it now. I'm actively searching and will update this with attribution as soon as I find it!
