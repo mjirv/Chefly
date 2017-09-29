@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
     # Makes sure the right user is logged in
     before_filter -> { authorize_id(params[:id]) }, except: [:new, :create]
+    autocomplete :tag, :name
 
     def new
         @user = User.new
@@ -51,26 +52,41 @@ class UsersController < ApplicationController
         @options = (1..10).to_a
     end
 
+    # Helper method, expects a string of comma-separated tag names
+    def get_tags(tags)
+        # TODO should fail gracefully if a tag doesn't exist
+        if tags == nil
+            return nil
+        end
+        return Tag.where(:name => tags.split(", ")).pluck(:id)
+    end
+
     # Called when the user generates new recipes (i.e. this removes all previous recipes and replaces them with new ones)
     def generate_recipes
         user_id = params[:id]
         n_recipes = params[:Config][:n_recipes]
-
+        # tags param should be an array of IDs, or nil
+        tag_ids = get_tags(params[:tags])
+        
         # Get rid of the previous recipes
         old_recipes = RecipeToUserLink.where(:user_id => user_id).where(:status => RecipeToUserLink.statuses["active"])
         old_recipes.map{ |r| r.status = RecipeToUserLink.statuses["inactive"] }
         old_recipes.map{ |r| r.save }
 
         # Get random new recipes
-        recipes = Recipe.limit(n_recipes).order("RANDOM()")
+        recipes = get_recipes(n_recipes, tag_ids)
         recipes.each do |recipe|
-            link = RecipeToUserLink.new(:status => RecipeToUserLink.statuses["active"], :user_id => user_id, :recipe_id => recipe.id)
-            link.save
+            link = RecipeToUserLink.create!(:status => RecipeToUserLink.statuses["active"], :user_id => user_id, :recipe_id => recipe)
         end
 
         # Call grocery list generation and redirect to the recipes rather than to the grocery list
         change_grocery_list(user_id, "no_redirect", refresh=true)
         redirect_to show_user_recipes_path(:id => user_id), :method => :get
+    end
+
+    def get_recipes(n_recipes, tags=nil)
+        recipes = tags.length > 0 ? Recipe.joins("INNER JOIN tag_to_recipe_links on recipes.id = tag_to_recipe_links.recipe_id").where(:tag_to_recipe_links => {:tag_id => tags}).limit(n_recipes).order("RANDOM()").pluck(:id) : Recipe.limit(n_recipes).order("RANDOM()").pluck(:id)
+        return recipes
     end
 
     # The top-level function to change a grocery list from user's active recipes
@@ -95,9 +111,9 @@ class UsersController < ApplicationController
                     g.status = GroceryList.statuses["inactive"]
                     g.save
                 end
-                generate_new_grocery_list(user_id, redirect_to_gl)
             end
         end
+        generate_new_grocery_list(user_id, redirect_to_gl)
     end
 
     # Called by change_grocery_list when we only want to add to the current one
@@ -166,22 +182,21 @@ class UsersController < ApplicationController
         user_id = User.find(params[:id]).id
         num_recipes = Recipe.all.count
         recipe_ids = Recipe.all.pluck(:id)
-
+        tags = get_tags(params[:tags] || nil)
+        
         # Make sure we aren't duplicating recipes
         if RecipeToUserLink.where(:user_id => user_id).where(:status => RecipeToUserLink.statuses["active"]).count == num_recipes
             raise RuntimeError, "No more recipes available"
         end
 
         # Get a random recipe
-        recipe = Recipe.find(recipe_ids.sample)
-
+        recipe = get_recipes(1, tags)[0]
         # Make sure it wasn't already one of the user's active recipes
-        while RecipeToUserLink.where(:user_id => user_id).where(:recipe_id => recipe.id).where(:status => RecipeToUserLink.statuses["active"]) != []
-            # TODO: Do I use a different randomization method here for a reason?
-            recipe = Recipe.find(Random.rand(num_recipes))
+        while RecipeToUserLink.where(:user_id => user_id).where(:recipe_id => recipe).where(:status => RecipeToUserLink.statuses["active"]) != []
+            recipe = get_recipes(1, tags)[0]
         end
 
-        link = RecipeToUserLink.create(:status => RecipeToUserLink.statuses["active"], :user_id => user_id, :recipe_id => recipe.id)
+        link = RecipeToUserLink.create(:status => RecipeToUserLink.statuses["active"], :user_id => user_id, :recipe_id => recipe)
         change_grocery_list(user_id)
         redirect_to show_user_recipes_path(user_id)
     end
@@ -213,7 +228,7 @@ class UsersController < ApplicationController
         # TODO: Remove this if not debugging
         print item_hash_str
 
-        instacart_joiner_path = Rails.root.join('lib', 'utilities', 'instacart_driver.py').to_s
+        instacart_joiner_path = Rails.root.joins('lib', 'utilities', 'instacart_driver.py').to_s
 
         # TODO: Remove this if not debugging
         print instacart_joiner_path

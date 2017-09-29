@@ -1,8 +1,11 @@
 <div class="content">
     <h2>Your Recipes</h2>
     <%= button_to "Back", dashboard_path, method: :get %>
-    <%= button_to "Add New Recipe", get_new_user_recipe_path, method: :post %>
-
+    <%= form_tag(get_new_user_recipe_path(@user.id), method: "post") do  %>
+        <%= submit_tag "Add New Recipe"  %>
+        <%= text_field_tag("tags", "", placeholder: "Tags") %>
+        <%= autocomplete_field_tag 'tag', 'Tags', autocomplete_tag_name_users_path %>
+    <% end %>
     <%# Only list recipes if the user has active ones %>
 	<% if @recipes.length > 0 %>
 		<% @recipes.each do |recipe| %>
@@ -11,6 +14,7 @@
 				<a href="<%= recipe.url %>"><%= recipe.url %></a>
 				<%= button_to "Delete and Replace With New Recipe",  delete_and_get_new_user_recipe_path(@user.id, recipe.id), method: :post %>
 				<%= button_to "Delete", delete_user_recipe_path(@user.id, recipe.id), method: :delete %>
+                                <%= button_to "Manage Tags", show_recipe_tags_path(recipe.id), method: :get %>
                 <%# List the recipe's items %>
 				<ul>
 				<% recipe.recipe_items.pluck(:name).each do |item| %>
