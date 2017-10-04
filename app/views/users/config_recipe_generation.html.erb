@@ -5,9 +5,9 @@
     
     <div class="inner-content">
     <%= form_tag(generate_recipes_path(@user.id), method: "post") do %>
-        <%# Default to creating 4 recipes %>
-        <%= text_field_tag("tags", "", placeholder: "tags") %>
+        <%= autocomplete_field_tag 'tags', '', autocomplete_tag_name_users_path, placeholder: "Tags" %>
         <br />
+        <%# Default to creating 4 recipes %>
     	Generate <%= select("Config", "n_recipes", @options, {:include_blank => false, :selected => @options[4]}) %>
     	 recipes. <%= submit_tag "Go" %>
     <% end %>

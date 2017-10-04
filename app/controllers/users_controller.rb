@@ -267,7 +267,7 @@ class UsersController < ApplicationController
             user_recipe.save
 
             # TODO: There should be a function to delete from a GroceryList without creating a totally new one
-            generate_new_grocery_list(user_id, false)
+            #generate_new_grocery_list(user_id, false)
         end
     end
 

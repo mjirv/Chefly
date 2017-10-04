@@ -3,8 +3,7 @@
     <%= button_to "Back", dashboard_path, method: :get %>
     <%= form_tag(get_new_user_recipe_path(@user.id), method: "post") do  %>
         <%= submit_tag "Add New Recipe"  %>
-        <%= text_field_tag("tags", "", placeholder: "Tags") %>
-        <%= autocomplete_field_tag 'tag', 'Tags', autocomplete_tag_name_users_path %>
+        <%= autocomplete_field_tag 'tags', '', autocomplete_tag_name_users_path, placeholder: "Tags" %>
     <% end %>
     <%# Only list recipes if the user has active ones %>
 	<% if @recipes.length > 0 %>
