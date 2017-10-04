@@ -41,7 +41,7 @@ Rails.application.routes.draw do
   get '/tags/recipe/:recipe_id', to: 'tag_to_recipe_links#index', as: 'show_recipe_tags'
   post '/tags', to: 'tag_to_recipe_links#create', as: 'add_recipe_tag'
   delete '/tags/:recipe_id/:tag_id', to: 'tag_to_recipe_links#delete', as: 'delete_recipe_tag'
-  get '/users/autocomplete/tags/:term', to: 'users#autocomplete_tag_names', as: 'autocomplete_tag_name_users'
+  get '/users/autocomplete/tags', to: 'users#autocomplete_tag_name', as: 'autocomplete_tag_name_users'
 
   # Session routes
   get 'signup', to: 'users#new'
