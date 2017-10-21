@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
     # Makes sure the right user is logged in
-    before_filter -> { authorize_id(params[:id]) }, except: [:new, :create]
+    before_filter -> { authorize_id(params[:id]) }, except: [:new, :create, :autocomplete_tag_name]
     autocomplete :tag, :name
 
     def new
@@ -43,6 +43,7 @@ class UsersController < ApplicationController
     # Shows a user's current recipes
     def show_recipes
         @user = User.find(params[:id])
+        @admin = authorize_admin_helper
         @recipes = Recipe.where(:id => RecipeToUserLink.where(:user_id => @user.id).where(:status => RecipeToUserLink.statuses["active"]).pluck(:recipe_id))
     end
 

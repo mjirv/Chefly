@@ -35,4 +35,8 @@ class ApplicationController < ActionController::Base
             redirect_to '/login'
         end
     end
+
+    def authorize_admin_helper
+        User.find(session[:user_id]).permission == "admin"
+    end
 end
