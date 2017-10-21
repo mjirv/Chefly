@@ -5,7 +5,7 @@ require "uri"
 
 class GroceryListsController < ApplicationController
     # Make sure the right user is logged in
-    before_filter -> { authorize_id(GroceryList.find(params[:id]).user_id) }
+    before_filter -> { authorize_id(GroceryList.find(params[:id]).user_id) rescue authorize_id(params[:user_id]) }
     # Only admin can load the mapping
     before_filter -> { authorize_admin }, only: [:item_mapping]
 
@@ -80,6 +80,122 @@ class GroceryListsController < ApplicationController
         grocery_list.deduplicate()
         grocery_list.regenerate_items()
         redirect_to grocery_list_path(params[:id])
+    end
+
+    # The top-level function to change a grocery list from user's active recipes
+    def change_grocery_list(user_id = false, redirect_to_gl=false, refresh=false)
+        # I don't think I can use params as defaults, thus why these are needed
+        if not user_id
+            user_id = params[:user_id]
+        end
+
+        if not redirect_to_gl
+            redirect_to_gl = params[:redirect_to_gl]
+        end
+
+        if GroceryList.where(:user_id => user_id).where(:status => GroceryList.statuses["active"]) != []
+            # If we're not deleting all previous recipes, just update the grocery list
+            if refresh == false
+                update_grocery_list(user_id, redirect_to_gl)
+
+            # If we are, delete the old one and make a new one
+            else
+                GroceryList.where(:user_id => user_id).where(:status => [GroceryList.statuses["active"], nil]).map do |g| 
+                    g.status = GroceryList.statuses["inactive"]
+                    g.save
+                end
+            end
+        end
+        generate_new_grocery_list(user_id, redirect_to_gl)
+    end
+
+    # Called by change_grocery_list when we only want to add to the current one
+    def update_grocery_list(user_id, redirect_to_gl)
+        # We only care about the new recipe
+        # Assumption is we're only adding one recipe
+        last_recipe_id = RecipeToUserLink.where(:status => RecipeToUserLink.statuses["active"]).where(:user_id => user_id).last.recipe_id rescue nil
+        recipe_items = []
+        if last_recipe_id
+            recipe_items = RecipeItem.where(:recipe_id => last_recipe_id)
+        end
+        # Assume there is only one active list per user, which there should be
+        grocery_list = GroceryList.where(:user_id => user_id).where(:status => GroceryList.statuses["active"]).first
+
+        add_recipe_items_to_list(recipe_items, grocery_list, redirect_to_gl, user_id)
+    end
+
+    # Called by change_grocery_list when we want to create a totally new one
+    def generate_new_grocery_list(user_id, redirect_to_gl)
+        recipe_items = RecipeItem.where(:recipe_id => Recipe.where(:id => RecipeToUserLink.where(:status => RecipeToUserLink.statuses["active"]).where(:user_id => user_id).pluck(:recipe_id)))
+        
+        # Make a new grocery list
+        # TODO: Ideally the logic in add_recipe_items_to_list should be handled in the GroceryList initializer
+        grocery_list = GroceryList.create(:user_id => user_id, :status => GroceryList.statuses["active"])
+
+        add_recipe_items_to_list(recipe_items, grocery_list, redirect_to_gl, user_id)
+    end
+
+    # Creates GroceryListItems from RecipeItems and adds them to a GroceryList
+    # Not dependent on whether the GroceryList is new or just updating
+    def add_recipe_items_to_list(recipe_items, grocery_list, redirect_to_gl, user_id)
+        recipe_items.each do |ri|
+            item_name = ri.item.name
+
+            # Exclude items that aren't real, such as "For the gravy:"
+            if item_name.match(/[a-z]+/) && item_name[-1] != ":"
+                unit_name = ri.quantity.unit.name
+
+                # GroceryListItem should be named "unit items"
+                gli_name = "#{unit_name} #{item_name}"
+                amount = ri.quantity.amount
+                recipe_item_id = ri.id
+                grocery_list_id = grocery_list.id
+
+                # If no unit, the name should just be "items"
+                if unit_name == "NULL_UNIT"
+                    # TODO: Not convinced the amount should be 1.0 here in all cases. What if I want 2 potatoes?
+                    amount = 1.0
+                    gli_name = "#{item_name}"
+                end
+
+                string_amount = amount.to_s
+
+                GroceryListItem.create(:name => gli_name, :amount => amount, :string_amount => string_amount, :recipe_item_id => recipe_item_id, :grocery_list_id => grocery_list_id)
+            end
+        end
+        grocery_list.deduplicate
+
+        if redirect_to_gl == "true"
+            redirect_to grocery_list_path(grocery_list.id)
+        else
+            redirect_to show_user_recipes_path(user_id)
+        end
+    rescue AbstractController::DoubleRenderError
+        # The above may be the second redirect
+    end
+
+    # Can order groceries from your grocery list for you by running Instacart via Chromedriver
+    def auto_instacart
+        # Merge items by adding them to a hash
+        item_hash = Hash.new(0)
+        grocery_list = GroceryList.find(params[:grocery_list_id].to_i)
+        grocery_list.grocery_list_items.each do |item|
+            item_hash[item.recipe_item.item.name] += item.recipe_item.item_amount.ceil
+        end
+
+        item_hash_str = item_hash.to_s.gsub("\"", "'").gsub("=>", ":")
+        
+        # TODO: Remove this if not debugging
+        print item_hash_str
+
+        instacart_joiner_path = Rails.root.joins('lib', 'utilities', 'instacart_driver.py').to_s
+
+        # TODO: Remove this if not debugging
+        print instacart_joiner_path
+
+        # Call the python script that runs Chromedriver
+        `python "#{instacart_joiner_path}" #{ENV["INSTACART_USER"]} #{ENV["INSTACART_PASS"]} "#{item_hash_str}" "#{ENV["CHROMEDRIVER_PATH"]}"`
+        redirect_to dashboard_path(params[:id])
     end
 
     private
