@@ -85,6 +85,7 @@ class UsersController < ApplicationController
     end
 
     def get_recipes(n_recipes, tags=nil)
+        tags = [] if not tags
         recipes = tags.length > 0 ? Recipe.joins("INNER JOIN tag_to_recipe_links on recipes.id = tag_to_recipe_links.recipe_id").where(:tag_to_recipe_links => {:tag_id => tags}).limit(n_recipes).order("RANDOM()").pluck(:id) : Recipe.limit(n_recipes).order("RANDOM()").pluck(:id)
         return recipes
     end

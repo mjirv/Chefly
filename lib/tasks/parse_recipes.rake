@@ -21,7 +21,7 @@ namespace :parse_recipes do
 
     # Takes in a recipe from the file, creates a Recipe in the database, and calls recipe_items_to_db to make Items in the database
 	def recipe_to_db(recipe)
-		recipe_items = recipe["ingredients"].split("\n")
+		recipe_items = recipe["ingredients"].split("x;x")
 		db_recipe = Recipe.new(:name => recipe["name"], :url => recipe["url"])
 		db_recipe.save
 		recipe_items_to_db(recipe_items, db_recipe.id)
@@ -159,7 +159,7 @@ namespace :parse_recipes do
     end
 
 	# Uncomment this if there are already recipes in the DB and you want to overwrite them
-	# Recipe.all.map(&:delete)
+	Recipe.all.map(&:delete)
 	get_recipes(args.recipes_path)
   end
 
