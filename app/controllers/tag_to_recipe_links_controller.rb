@@ -4,6 +4,8 @@ class TagToRecipeLinksController < ApplicationController
 
     def index
         @recipe = params[:recipe_id]
+        @user_id = params[:user_id]
+        @recipe_name = Recipe.find(@recipe).name
         @tags = TagToRecipeLink.where(:recipe_id => @recipe).map(&:tag).pluck(:id, :name)
         @recipe_tag = TagToRecipeLink.new
     end

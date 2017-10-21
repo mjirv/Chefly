@@ -1,5 +1,7 @@
 <div class="content">
     <h2>Manage Tags</h2>
+    <%= button_to "Back", show_user_recipes_path(@user_id), method: :get %>
+    <h3><%= @recipe_name %></h3>
     <div class="inner-content">
         <%# List the tags %>
         <ul>
