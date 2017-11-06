@@ -12,18 +12,19 @@ namespace :parse_recipes do
     # Read the file at filepath one-by-one and send the line to recipe_to_db
   	def get_recipes(filepath)
 		n = 0
-		File.readlines(filepath).each do |line|
-			recipe_to_db(JSON.parse(line))
-			print "#{n} "
+		File.readlines(filepath).shuffle.each do |line|
+            recipe_to_db(JSON.parse(line))
+            if n % 1000 == 1
+                print "#{n} "
+            end
 			n += 1
 		end
 	end
 
     # Takes in a recipe from the file, creates a Recipe in the database, and calls recipe_items_to_db to make Items in the database
 	def recipe_to_db(recipe)
-		recipe_items = recipe["ingredients"].split("x;x")
-		db_recipe = Recipe.new(:name => recipe["name"], :url => recipe["url"])
-		db_recipe.save
+		recipe_items = recipe["ingredients"].split("\n")
+		db_recipe = Recipe.create(:name => recipe["name"], :url => recipe["url"])
 		recipe_items_to_db(recipe_items, db_recipe.id)
 
 		# We don't want recipes with no items

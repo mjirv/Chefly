@@ -10,7 +10,7 @@
 
         <%# List the items in the grocery list %>
         <ul>
-            <% @grocery_list.grocery_list_items.each do |item| %>
+            <% @grocery_list_items.each do |item| %>
                 <% if item.recipe_item.name[-1] != ":" %>
                     <li><%= item.to_s %>
                     <br />

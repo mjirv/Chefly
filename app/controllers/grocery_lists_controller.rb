@@ -12,6 +12,7 @@ class GroceryListsController < ApplicationController
 
     def show
         @grocery_list = GroceryList.find(params[:id])
+        @grocery_list_items = GroceryListItem.where(:grocery_list_id => params[:id]).where.not(:visible => false).includes(:recipe_item)
     end
 
     def update
@@ -83,7 +84,7 @@ class GroceryListsController < ApplicationController
     end
 
     # The top-level function to change a grocery list from user's active recipes
-    def change_grocery_list(user_id = false, redirect_to_gl=false, refresh=false)
+    def change_grocery_list(user_id = false, redirect_to_gl=false, refresh="false")
         # I don't think I can use params as defaults, thus why these are needed
         if not user_id
             user_id = params[:user_id]
@@ -93,20 +94,23 @@ class GroceryListsController < ApplicationController
             redirect_to_gl = params[:redirect_to_gl]
         end
 
+        if refresh == "false"
+            refresh = params[:refresh] || "false"
+        end
+
         if GroceryList.where(:user_id => user_id).where(:status => GroceryList.statuses["active"]) != []
             # If we're not deleting all previous recipes, just update the grocery list
-            if refresh == false
+            if refresh == "false"
                 update_grocery_list(user_id, redirect_to_gl)
 
             # If we are, delete the old one and make a new one
             else
                 GroceryList.where(:user_id => user_id).where(:status => [GroceryList.statuses["active"], nil]).map do |g| 
-                    g.status = GroceryList.statuses["inactive"]
-                    g.save
+                    g.delete
                 end
+                generate_new_grocery_list(user_id, redirect_to_gl)  
             end
         end
-        generate_new_grocery_list(user_id, redirect_to_gl)
     end
 
     # Called by change_grocery_list when we only want to add to the current one
@@ -116,7 +120,7 @@ class GroceryListsController < ApplicationController
         last_recipe_id = RecipeToUserLink.where(:status => RecipeToUserLink.statuses["active"]).where(:user_id => user_id).last.recipe_id rescue nil
         recipe_items = []
         if last_recipe_id
-            recipe_items = RecipeItem.where(:recipe_id => last_recipe_id)
+            recipe_items = RecipeItem.where(:recipe_id => last_recipe_id).includes(:item).includes(:quantity).includes(:quantity => :unit)
         end
         # Assume there is only one active list per user, which there should be
         grocery_list = GroceryList.where(:user_id => user_id).where(:status => GroceryList.statuses["active"]).first
@@ -126,7 +130,7 @@ class GroceryListsController < ApplicationController
 
     # Called by change_grocery_list when we want to create a totally new one
     def generate_new_grocery_list(user_id, redirect_to_gl)
-        recipe_items = RecipeItem.where(:recipe_id => Recipe.where(:id => RecipeToUserLink.where(:status => RecipeToUserLink.statuses["active"]).where(:user_id => user_id).pluck(:recipe_id)))
+        recipe_items = RecipeItem.where(:recipe_id => Recipe.where(:id => RecipeToUserLink.where(:status => RecipeToUserLink.statuses["active"]).where(:user_id => user_id).pluck(:recipe_id))).includes(:item).includes(:quantity).includes(:quantity => :unit)
         
         # Make a new grocery list
         # TODO: Ideally the logic in add_recipe_items_to_list should be handled in the GroceryList initializer
@@ -138,6 +142,7 @@ class GroceryListsController < ApplicationController
     # Creates GroceryListItems from RecipeItems and adds them to a GroceryList
     # Not dependent on whether the GroceryList is new or just updating
     def add_recipe_items_to_list(recipe_items, grocery_list, redirect_to_gl, user_id)
+        grocery_list_id = grocery_list.id
         recipe_items.each do |ri|
             item_name = ri.item.name
 
@@ -149,7 +154,6 @@ class GroceryListsController < ApplicationController
                 gli_name = "#{unit_name} #{item_name}"
                 amount = ri.quantity.amount
                 recipe_item_id = ri.id
-                grocery_list_id = grocery_list.id
 
                 # If no unit, the name should just be "items"
                 if unit_name == "NULL_UNIT"
