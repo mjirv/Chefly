@@ -6,12 +6,13 @@
         <%# List the tags %>
         <ul>
             <% @tags.each do |id, name| %>
-                <li><%= link_to name, delete_recipe_tag_path(tag_id: id), method: :delete %></li>
+                <li><%= link_to name, delete_recipe_tag_path(tag_id: id, user_id: @user_id), method: :delete %></li>
             <% end %>
         </ul>
         <%= form_tag '/tags', method: 'post' do %>
             <%= text_field_tag :tag_name, "Tag Name" %>
             <%= hidden_field_tag :recipe_id, @recipe %>
+            <%= hidden_field_tag :user_id, @user_id %>
             <br />
             <%= submit_tag "Add Tag" %>
         <% end %>
