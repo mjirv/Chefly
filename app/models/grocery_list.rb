@@ -18,7 +18,14 @@ class GroceryList < ApplicationRecord
         
         pairs_with_dupes.each do |item_unit, glis|
             new_amount = glis.map{|gli| gli.amount}.sum()
-            new_merged_gli = GroceryListItem.create(:name => glis[0].name, :amount => new_amount, :grocery_list_id => self.id, :recipe_item_id => glis[0].recipe_item_id, :visible => true, :combined => true, :user_edited => false)
+            new_merged_gli = GroceryListItem.create(
+                :name => glis[0].name,
+                :amount => new_amount,
+                :grocery_list_id => self.id,
+                :recipe_item_id => glis[0].recipe_item_id,
+                :visible => true,
+                :combined => true,
+                :user_edited => false)
             #if new_merged_gli
                 glis.map do |gli|
                     real_gli = GroceryListItem.find(gli.id) 
@@ -46,7 +53,8 @@ class GroceryList < ApplicationRecord
 
     # Get all visible GroceryListItems for the current GroceryList
     def grocery_list_items
-        return GroceryListItem.where(:grocery_list_id => self.id).where.not(:visible => false)
+        return GroceryListItem.where(:grocery_list_id => self.id).
+            where.not(:visible => false)
     end
 
     # Calls regenerate on GLIs that are combined and aren't user-edited

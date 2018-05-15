@@ -3,7 +3,10 @@ class RecipeToUserLinksController < ApplicationController
     def show_recipes
         @user = User.find(params[:id])
         @admin = authorize_admin_helper
-        @recipes = Recipe.where(:id => RecipeToUserLink.where(:user_id => @user.id).where(:status => RecipeToUserLink.statuses["active"]).pluck(:recipe_id))
+        @recipes = Recipe.
+            where(:id => RecipeToUserLink.where(:user_id => @user.id).
+            where(:status => RecipeToUserLink.statuses["active"]).
+            pluck(:recipe_id))
     end
 
     def config_recipe_generation
