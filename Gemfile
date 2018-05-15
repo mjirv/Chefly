@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.0'
+gem 'rails', '~> 5.1'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use Puma as the app server
@@ -38,6 +38,8 @@ gem 'capistrano-rails', '~> 1.1.1'
 
 # Add this if you're using rvm
 gem 'capistrano-rvm', github: "capistrano/rvm"
+
+gem 'google_sign_in'
 
 
 group :development, :test do

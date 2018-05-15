@@ -1,12 +1,12 @@
 default: &default
-  adapter: postgresql
-  encoding: unicode
+  adapter: sqlite3
+  # encoding: unicode
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
-  host: localhost
-  username: rails
-  password: <%= ENV['APP_DATABASE_PASSWORD'] %>
+  # host: localhost
+  # username: rails
+  # password: <%= ENV['APP_DATABASE_PASSWORD'] %>
 
 development:
   <<: *default
@@ -21,6 +21,9 @@ test:
 
 production:
   <<: *default
+  adapter: postgresql
+  encoding: unicode
+  host: localhost
   database: recipe-app_production
   username: rails
   password: <%= ENV['APP_DATABASE_PASSWORD'] %>
