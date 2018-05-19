@@ -5,9 +5,9 @@ require "uri"
 
 class GroceryListsController < ApplicationController
     # Make sure the right user is logged in
-    before_filter -> { authorize_id(GroceryList.find(params[:id]).user_id) rescue authorize_id(params[:user_id]) }
+    before_action -> { authorize_id(GroceryList.find(params[:id]).user_id) rescue authorize_id(params[:user_id]) }
     # Only admin can load the mapping
-    before_filter -> { authorize_admin }, only: [:item_mapping]
+    before_action -> { authorize_admin }, only: [:item_mapping]
 
 
     def show

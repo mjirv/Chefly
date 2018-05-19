@@ -4,7 +4,7 @@
     <%= button_to "Edit", edit_grocery_list_path(@grocery_list.id), method: :get %>
     <div class="inner-content">
         <%# Only display the mapping button if the user is an admin %>
-        <% if User.find(session[:user_id]).permission == "admin" %>
+        <% if User.find(cookies.signed[:user_id]).permission == "admin" %>
             <%= button_to "Mapping", gl_item_mapping_path(@grocery_list.id), method: :get %>
         <% end %>
 

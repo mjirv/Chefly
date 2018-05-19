@@ -44,7 +44,6 @@ Rails.application.routes.draw do
   get '/users/autocomplete/tags', to: 'users#autocomplete_tag_name', as: 'autocomplete_tag_name_users'
 
   # Session routes
-  get 'signup', to: 'users#new'
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'

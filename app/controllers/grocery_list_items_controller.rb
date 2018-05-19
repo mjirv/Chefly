@@ -1,8 +1,8 @@
 class GroceryListItemsController < ApplicationController
     # Make sure it's the correct user
-	before_filter -> { authorize_id(GroceryListItem.find(params[:id]).grocery_list.user_id) }
+	before_action -> { authorize_id(GroceryListItem.find(params[:id]).grocery_list.user_id) }
     # Only admins can use mapping
-    before_filter -> { authorize_admin }, only: [:map, :map_post]
+    before_action -> { authorize_admin }, only: [:map, :map_post]
 
 	def update
 		@item = GroceryListItem.find(params[:id])

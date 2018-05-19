@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
     # Makes sure the right user is logged in
-    before_filter -> { authorize_id(params[:id]) }, except: [:new, :create, :autocomplete_tag_name]
+    before_action -> { authorize_id(params[:id]) }, except: [:new, :create, :autocomplete_tag_name]
     autocomplete :tag, :name
 
     def new
@@ -13,11 +13,11 @@ class UsersController < ApplicationController
         # What if we want to create an admin? Right now, we have to use the rails console
         @user.permission = User.permissions["user"]
         if @user.save
-            session[:user_id] = @user.id
+            cookies.signed[:user_id] = @user.id
             redirect_to dashboard_path(@user.id)
         else
             flash.alert = "An error occurred."
-            redirect_to '/signup'
+            redirect_to '/login'
         end
     end
 

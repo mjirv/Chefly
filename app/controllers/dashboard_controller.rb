@@ -1,5 +1,5 @@
 class DashboardController < ApplicationController
-    before_filter -> { authorize_id(params[:id]) }
+    before_action -> { authorize_id(params[:id]) }
 
     # Get the variables needed to show the dashboard
 	def show

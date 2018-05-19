@@ -15,19 +15,19 @@
     <%# The menu %>
     <div class="menu">
 
-      <%# Only display the signup and login page links if the user isn't signed in %>
+      <%# Only display the login and login page links if the user isn't signed in %>
       <% if not current_user %>
           <h1 class="title"><%= ENV["APP_NAME"] %></h1> 
-          <%= button_to 'Sign Up', '/signup', method: :get %>
+          <%= button_to 'Sign Up', '/login', method: :get %>
           <%= button_to "Login", '/login', method: :get %>
       <% end %>
 
       <%# If the user is logged in, give them options to log out, edit their profile, and go to their dashboard %>
       <% if current_user %>
-          <h1 class="title"><%= link_to ENV["APP_NAME"], dashboard_path(:id => session[:user_id]), method: :get %></h1> 
+          <h1 class="title"><%= link_to ENV["APP_NAME"], dashboard_path(:id => cookies.signed[:user_id]), method: :get %></h1> 
           <%= button_to "Logout", '/logout', method: :delete %>
-          <%= button_to "Edit Profile", edit_users_path(:id => session[:user_id]), method: :get %>
-    	    <%= button_to "Home", dashboard_path(:id => session[:user_id]), method: :get %>
+          <%= button_to "Edit Profile", edit_users_path(:id => cookies.signed[:user_id]), method: :get %>
+    	    <%= button_to "Home", dashboard_path(:id => cookies.signed[:user_id]), method: :get %>
       <% end %>
 
       <% if flash[:alert] %>

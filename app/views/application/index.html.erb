@@ -1,6 +1,6 @@
 <%# The index page %>
 
-<%# Redirect to the signup page if the user isn't logged in %>
+<%# Redirect to the login page if the user isn't logged in %>
 <% if not current_user %>
     <div class="content" style="background-color: #222222; color: #eddddd; max-width: 400px; opacity: .9">
         <div align="center">
@@ -9,7 +9,7 @@
         </div>
         <br />
         <div class="inner-content" style="color: #222222; background-color: #eddddd">
-            <%= render partial: "shared/signup" %> 
+            <%= render partial: "shared/login" %> 
         </div>
     </div>
 <% end %>
@@ -17,6 +17,6 @@
 <%# Redirect to the user's dashboard if they are logged in %>
 <% if current_user %>
   <script type="text/javascript">
-    window.location.href="/dashboard/<%= session[:user_id] %>"
+    window.location.href="/dashboard/<%= cookies.signed[:user_id] %>"
   </script>
 <% end %>
