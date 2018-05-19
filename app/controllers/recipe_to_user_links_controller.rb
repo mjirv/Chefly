@@ -105,8 +105,15 @@ class RecipeToUserLinksController < ApplicationController
                 select('recipes.id').
                 pluck(:id)
         else
-            return Recipe.where.not(:id => active_recipes).
-            limit(n_recipes).order("RANDOM()").pluck(:id)
+            if ENV['RAILS_ENV'] == 'production' and current_user.permission != 'admin'
+                # Limit regular users to tagged recipes in production to make sure they're legit
+                return Recipe.joins("INNER JOIN tag_to_recipe_links ON recipes.id = tag_to_recipe_links.recipe_id").
+                    where.not(:id => active_recipes).
+                    limit(n_recipes).order("RANDOM()").pluck(:id)
+            else
+                return Recipe.where.not(:id => active_recipes).
+                limit(n_recipes).order("RANDOM()").pluck(:id)
+            end
         end
     end
 end

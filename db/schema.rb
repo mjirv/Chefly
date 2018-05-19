@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180519121400) do
+ActiveRecord::Schema.define(version: 20180519234632) do
 
   create_table "grocery_list_items", force: :cascade do |t|
     t.string "name"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 20180519121400) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "url"
+    t.string "image"
   end
 
   create_table "tag_to_item_links", force: :cascade do |t|

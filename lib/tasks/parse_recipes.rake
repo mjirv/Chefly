@@ -24,7 +24,7 @@ namespace :parse_recipes do
     # Takes in a recipe from the file, creates a Recipe in the database, and calls recipe_items_to_db to make Items in the database
 	def recipe_to_db(recipe)
 		recipe_items = recipe["ingredients"].split("\n")
-		db_recipe = Recipe.create(:name => recipe["name"], :url => recipe["url"])
+		db_recipe = Recipe.create(:name => recipe["name"], :url => recipe["url"], :image => recipe["image"])
 		recipe_items_to_db(recipe_items, db_recipe.id)
 
 		# We don't want recipes with no items
