@@ -1,0 +1,1 @@
+GoogleSignIn::Identity.client_id = "590474112051-a1juo918br4clmm29o2tftdgf3uviklc.apps.googleusercontent.com"

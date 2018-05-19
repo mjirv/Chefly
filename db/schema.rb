@@ -10,60 +10,60 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170925050345) do
+ActiveRecord::Schema.define(version: 20180519121400) do
 
   create_table "grocery_list_items", force: :cascade do |t|
-    t.string   "name"
-    t.float    "amount"
-    t.string   "string_amount"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.integer  "grocery_list_id"
-    t.string   "item_name"
-    t.boolean  "visible"
-    t.boolean  "combined"
-    t.boolean  "user_edited"
-    t.integer  "recipe_item_id"
+    t.string "name"
+    t.float "amount"
+    t.string "string_amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "grocery_list_id"
+    t.string "item_name"
+    t.boolean "visible"
+    t.boolean "combined"
+    t.boolean "user_edited"
+    t.integer "recipe_item_id"
   end
 
   create_table "grocery_lists", force: :cascade do |t|
-    t.integer  "status"
-    t.integer  "user_id"
+    t.integer "status"
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_grocery_lists_on_user_id"
   end
 
   create_table "items", force: :cascade do |t|
-    t.string   "name"
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "quantities", force: :cascade do |t|
-    t.float    "amount"
+    t.float "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "unit_id"
+    t.integer "unit_id"
   end
 
   create_table "recipe_items", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "recipe_id"
-    t.integer  "item_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.integer  "quantity_id"
-    t.integer  "item_amount"
-    t.boolean  "mapped"
+    t.string "name"
+    t.integer "recipe_id"
+    t.integer "item_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "quantity_id"
+    t.integer "item_amount"
+    t.boolean "mapped"
     t.index ["item_id"], name: "index_recipe_items_on_item_id"
     t.index ["recipe_id"], name: "index_recipe_items_on_recipe_id"
   end
 
   create_table "recipe_to_user_links", force: :cascade do |t|
-    t.integer  "status"
-    t.integer  "user_id"
-    t.integer  "recipe_id"
+    t.integer "status"
+    t.integer "user_id"
+    t.integer "recipe_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["recipe_id"], name: "index_recipe_to_user_links_on_recipe_id"
@@ -71,47 +71,46 @@ ActiveRecord::Schema.define(version: 20170925050345) do
   end
 
   create_table "recipes", force: :cascade do |t|
-    t.string   "name"
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string   "url"
+    t.string "url"
   end
 
   create_table "tag_to_item_links", force: :cascade do |t|
-    t.integer  "tag_id"
-    t.integer  "item_id"
+    t.integer "tag_id"
+    t.integer "item_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "tag_to_recipe_links", force: :cascade do |t|
-    t.integer  "tag_id"
-    t.integer  "recipe_id"
+    t.integer "tag_id"
+    t.integer "recipe_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "tags", force: :cascade do |t|
-    t.string   "name"
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "units", force: :cascade do |t|
-    t.string   "name"
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "email"
-    t.integer  "status"
-    t.integer  "permission"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.string   "password_digest"
+    t.string "email"
+    t.integer "status"
+    t.integer "permission"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "google_id"
+    t.string "name"
   end
 
 end
