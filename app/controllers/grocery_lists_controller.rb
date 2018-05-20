@@ -111,6 +111,9 @@ class GroceryListsController < ApplicationController
                 end
                 generate_new_grocery_list(user_id, redirect_to_gl)  
             end
+        else
+            # Otherwise there is no active grocery list, so create one
+            generate_new_grocery_list(user_id, redirect_to_gl)
         end
     end
 
