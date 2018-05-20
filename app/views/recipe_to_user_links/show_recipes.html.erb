@@ -10,7 +10,7 @@
 		<% @recipes.each do |recipe| %>
 			<div class="inner-content">
 				<h3><%= recipe.name %></h3>
-                <%= image_tag recipe.image || '', class: 'recipe-image' %>
+                <%= image_tag recipe.image || '', class: 'recipe-image', onerror: "this.style.display='none'" %>
                 <br />
 				<a href="<%= recipe.url %>"><%= recipe.url %></a>
 				<%= button_to "Delete and Replace With New Recipe",  delete_and_get_new_user_recipe_path(@user.id, recipe.id), method: :post %>
