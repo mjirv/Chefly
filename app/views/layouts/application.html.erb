@@ -29,14 +29,13 @@
           <%= button_to "Edit Profile", edit_users_path(:id => cookies.signed[:user_id]), method: :get %>
     	    <%= button_to "Home", dashboard_path(:id => cookies.signed[:user_id]), method: :get %>
       <% end %>
-
-      <% if flash[:alert] %>
-          <div class="alert"><%= flash[:alert] %></div>
-      <% end %>
-      <% if flash[:notice] %>
-          <div class="notice"><%= flash[:notice] %></div>
-      <% end %>
     	<br />
+        <% if flash[:alert] %>
+        <div class="alert"><%= flash[:alert] %></div>
+        <% end %>
+        <% if flash[:notice] %>
+            <div class="notice"><%= flash[:notice] %></div>
+        <% end %>
     </div>
 
     <%# The rest of the page %>

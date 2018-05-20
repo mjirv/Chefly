@@ -66,6 +66,7 @@ class GroceryListsController < ApplicationController
         end
 
         # TODO: Add an alert that the email sent or failed
+        flash.notice = "Successfully sent email"
         redirect_to dashboard_path(user_id)
     end
 
