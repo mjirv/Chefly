@@ -41,7 +41,7 @@ class GroceryListsController < ApplicationController
         "<b>Shopping List</b>
         <br />#{@grocery_list.get_list.join("<br />")}"
 
-        puts "Email: #{ENV["FROM_EMAIL"]}"
+        puts "Email: #{ENV["FROM_EMAIL_PASSWORD"]}"
 
         # Change this if you want to send emails another way
         options = { :address => 'smtp.gmail.com',
